@@ -14,6 +14,7 @@ export type Plan = {
   planType?: 'goal' | 'casual'; // 有目標 or 日常
   dedicationType?: string;
   completedDate?: string;
+  notificationId?: string; // expo-notifications 排程後的 id；undefined 代表未啟用提醒
 };
 
 export type DailyLog = {

@@ -11,10 +11,11 @@ import { SutraSheet } from '../components/SutraSheet';
 import { CountEditor } from '../components/CountEditor';
 import { DatePickerSheet } from '../components/DatePickerSheet';
 import { DailyStackParamList } from '../navigation/types';
+import { formatLocalDate } from '../utils/date';
 
 type Props = NativeStackScreenProps<DailyStackParamList, 'DailyMain'>;
 
-const todayStr = () => new Date().toISOString().split('T')[0];
+const todayStr = () => formatLocalDate();
 const dingWav = require('../../assets/ding.wav');
 
 export function DailyScreen({ navigation }: Props) {
@@ -65,7 +66,7 @@ export function DailyScreen({ navigation }: Props) {
     return Array.from({ length: 7 }, (_, i) => {
       const d = new Date(today);
       d.setDate(d.getDate() - (6 - i));
-      const dateStr = d.toISOString().split('T')[0];
+      const dateStr = formatLocalDate(d);
       const log = dailyLogs.find((l) => l.date === dateStr);
       return {
         date: dateStr,
@@ -140,14 +141,22 @@ export function DailyScreen({ navigation }: Props) {
             日 常 記 錄
           </Text>
         </View>
-        <Pressable
-          onPress={() => setMuted((m) => !m)}
-          style={[styles.muteBtn, { borderColor: T.hairlineStrong }]}
-        >
-          <Text style={{ color: T.inkSoft, fontSize: 14 }}>
-            {muted ? '🔇' : '🔈'}
-          </Text>
-        </Pressable>
+        <View style={styles.topRight}>
+          <Pressable
+            onPress={() => navigation.navigate('Settings')}
+            style={[styles.muteBtn, { borderColor: T.hairlineStrong }]}
+          >
+            <Text style={{ color: T.inkSoft, fontSize: 16 }}>☉</Text>
+          </Pressable>
+          <Pressable
+            onPress={() => setMuted((m) => !m)}
+            style={[styles.muteBtn, { borderColor: T.hairlineStrong }]}
+          >
+            <Text style={{ color: T.inkSoft, fontSize: 14 }}>
+              {muted ? '🔇' : '🔈'}
+            </Text>
+          </Pressable>
+        </View>
       </View>
 
       {/* 遍數 */}
@@ -324,6 +333,7 @@ const styles = StyleSheet.create({
   },
   subtitle: { fontSize: 11, letterSpacing: 6 },
   title: { fontSize: 22, letterSpacing: 4, marginTop: 2 },
+  topRight: { flexDirection: 'row', gap: 10, alignItems: 'center' },
   muteBtn: {
     width: 38,
     height: 38,

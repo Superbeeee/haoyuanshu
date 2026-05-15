@@ -15,6 +15,7 @@ import { PaperBg } from '../components/PaperBg';
 import { Seal } from '../components/Seal';
 import { PlanStackParamList } from '../navigation/types';
 import { getCurrentDay } from '../utils/planDay';
+import { formatLocalDate } from '../utils/date';
 
 type Props = NativeStackScreenProps<PlanStackParamList, 'Home'>;
 
@@ -36,7 +37,7 @@ export function HomeScreen({ navigation }: Props) {
   const allPlans = useStore((s) => s.plans);
   const plans = useMemo(() => allPlans.filter((p) => p.status === 'active'), [allPlans]);
   const dailyLogs = useStore((s) => s.dailyLogs);
-  const todayDate = new Date().toISOString().split('T')[0];
+  const todayDate = formatLocalDate();
 
   // 90 日熱力圖
   const heat = useMemo(() => {
@@ -44,7 +45,7 @@ export function HomeScreen({ navigation }: Props) {
     return Array.from({ length: 91 }, (_, i) => {
       const d = new Date(today);
       d.setDate(d.getDate() - (90 - i));
-      const dateStr = d.toISOString().split('T')[0];
+      const dateStr = formatLocalDate(d);
       const total = dailyLogs
         .filter((l) => l.date === dateStr)
         .reduce((sum, l) => sum + l.count, 0);

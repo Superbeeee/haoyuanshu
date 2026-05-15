@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { useTheme } from '../theme/useTheme';
 import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
+import { formatLocalDate } from '../utils/date';
 
 type Props = {
   visible: boolean;
@@ -30,7 +31,7 @@ export function DatePickerSheet({
   accentColor,
 }: Props) {
   const { T } = useTheme();
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = formatLocalDate();
   const accent = accentColor ?? T.vermilion;
 
   const list = useMemo(() => {
@@ -38,7 +39,7 @@ export function DatePickerSheet({
     return Array.from({ length: days }, (_, i) => {
       const d = new Date(now);
       d.setDate(d.getDate() - i);
-      const dateStr = d.toISOString().split('T')[0];
+      const dateStr = formatLocalDate(d);
       return {
         date: dateStr,
         count: counts[dateStr] ?? 0,

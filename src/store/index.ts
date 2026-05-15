@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Plan, DailyLog, Settings } from '../types';
+import { formatLocalDate } from '../utils/date';
 
 const KEYS = {
   plans: '@haoyuanshu/plans',
@@ -35,7 +36,7 @@ type AppState = {
   getTotalCount: (planId: string) => number;
 };
 
-const today = () => new Date().toISOString().split('T')[0];
+const today = () => formatLocalDate();
 
 export const useStore = create<AppState>((set, get) => ({
   plans: [],

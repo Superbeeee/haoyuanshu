@@ -5,10 +5,11 @@ import { useStore } from '../store';
 import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
 import { Woodfish } from '../components/Woodfish';
 import { PlanStackParamList } from '../navigation/types';
+import { formatLocalDate } from '../utils/date';
 
 type Props = NativeStackScreenProps<PlanStackParamList, 'Immersive'>;
 
-const today = () => new Date().toISOString().split('T')[0];
+const today = () => formatLocalDate();
 
 export function ImmersiveScreen({ navigation, route }: Props) {
   const { planId, currentCount, goal } = route.params;

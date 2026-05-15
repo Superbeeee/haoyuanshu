@@ -7,6 +7,7 @@ import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
 import { PaperBg } from '../components/PaperBg';
 import { Seal } from '../components/Seal';
 import { cancelReminder } from '../utils/notifications';
+import { formatLocalDate } from '../utils/date';
 import { PlanStackParamList } from '../navigation/types';
 
 type Props = NativeStackScreenProps<PlanStackParamList, 'Complete'>;
@@ -39,12 +40,15 @@ export function CompleteScreen({ navigation, route }: Props) {
     updatePlan(plan.id, {
       status: 'completed',
       dedicationType: selectedDedication,
-      completedDate: new Date().toISOString().split('T')[0],
+      completedDate: formatLocalDate(),
+      notificationId: undefined,
     });
-    // 取消提醒通知
-    try {
-      await cancelReminder(plan.id);
-    } catch {}
+    // 取消提醒通知（用排程時記下的 expo notification id）
+    if (plan.notificationId) {
+      try {
+        await cancelReminder(plan.notificationId);
+      } catch {}
+    }
     navigation.popToTop();
   };
 

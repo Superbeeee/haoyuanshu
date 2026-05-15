@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, Pressable, Alert, ScrollView, StyleSheet } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, Text, Pressable, Alert, ScrollView, StyleSheet, Switch } from 'react-native';
 import Constants from 'expo-constants';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTheme } from '../theme/useTheme';
@@ -7,7 +7,11 @@ import { useStore } from '../store';
 import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
 import { PaperBg } from '../components/PaperBg';
 import { Hairline } from '../components/Hairline';
-import { cancelAllReminders } from '../utils/notifications';
+import {
+  cancelAllReminders,
+  cancelReminder,
+  scheduleDailyReminder,
+} from '../utils/notifications';
 import { PlanStackParamList, DailyStackParamList } from '../navigation/types';
 
 type SettingsScreenProps =
@@ -17,10 +21,35 @@ type SettingsScreenProps =
 export function SettingsScreen({ navigation }: SettingsScreenProps) {
   const { T, theme } = useTheme();
   const updateSettings = useStore((s) => s.updateSettings);
+  const updatePlan = useStore((s) => s.updatePlan);
   const clearAll = useStore((s) => s.clearAll);
+  const plans = useStore((s) => s.plans);
+  const activePlans = useMemo(
+    () => plans.filter((p) => p.status === 'active'),
+    [plans]
+  );
 
   const handleTheme = (t: 'light' | 'dark') => {
     updateSettings({ theme: t });
+  };
+
+  const handleToggleReminder = async (planId: string, enable: boolean) => {
+    const plan = activePlans.find((p) => p.id === planId);
+    if (!plan) return;
+
+    if (enable) {
+      const id = await scheduleDailyReminder(plan.id, plan.name, plan.reminder);
+      if (id) {
+        updatePlan(plan.id, { notificationId: id });
+      } else {
+        Alert.alert('無法啟用提醒', '請確認系統通知權限是否開啟。');
+      }
+    } else {
+      if (plan.notificationId) {
+        await cancelReminder(plan.notificationId);
+      }
+      updatePlan(plan.id, { notificationId: undefined });
+    }
   };
 
   const handleClear = () => {
@@ -82,6 +111,56 @@ export function SettingsScreen({ navigation }: SettingsScreenProps) {
           </Pressable>
         </View>
 
+        {/* 提醒 */}
+        <Text style={[styles.sectionLabel, { color: T.inkMuted }]}>
+          提醒 · REMINDERS
+        </Text>
+        <View
+          style={[
+            styles.card,
+            { backgroundColor: T.bgElevated, borderColor: T.hairline },
+          ]}
+        >
+          {activePlans.length === 0 ? (
+            <View style={styles.row}>
+              <Text style={[styles.rowValue, { color: T.inkMuted }]}>
+                目前無進行中計劃
+              </Text>
+            </View>
+          ) : (
+            activePlans.map((p, i) => {
+              const enabled = !!p.notificationId;
+              return (
+                <View key={p.id}>
+                  {i > 0 && <Hairline />}
+                  <View style={styles.row}>
+                    <View style={{ flex: 1 }}>
+                      <Text
+                        style={[
+                          styles.rowText,
+                          { color: T.ink, fontFamily: FONT_SERIF },
+                        ]}
+                        numberOfLines={1}
+                      >
+                        {p.name}
+                      </Text>
+                      <Text style={[styles.rowSubText, { color: T.inkMuted }]}>
+                        每日 {p.reminder}
+                      </Text>
+                    </View>
+                    <Switch
+                      value={enabled}
+                      onValueChange={(v) => handleToggleReminder(p.id, v)}
+                      trackColor={{ false: T.hairlineStrong, true: T.vermilion }}
+                      thumbColor={T.bg}
+                    />
+                  </View>
+                </View>
+              );
+            })
+          )}
+        </View>
+
         {/* 資料 */}
         <Text style={[styles.sectionLabel, { color: T.inkMuted }]}>資料 · DATA</Text>
         <View style={[styles.card, { backgroundColor: T.bgElevated, borderColor: T.hairline }]}>
@@ -126,5 +205,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   rowText: { fontSize: 15, letterSpacing: 2 },
+  rowSubText: { fontSize: 12, letterSpacing: 1, marginTop: 4 },
   rowValue: { fontSize: 13 },
 });

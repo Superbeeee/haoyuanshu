@@ -12,10 +12,11 @@ import { CountEditor } from '../components/CountEditor';
 import { DatePickerSheet } from '../components/DatePickerSheet';
 import { PlanStackParamList } from '../navigation/types';
 import { getCurrentDay } from '../utils/planDay';
+import { formatLocalDate } from '../utils/date';
 
 type Props = NativeStackScreenProps<PlanStackParamList, 'Today'>;
 
-const today = () => new Date().toISOString().split('T')[0];
+const today = () => formatLocalDate();
 const dingWav = require('../../assets/ding.wav');
 
 export function TodayScreen({ navigation, route }: Props) {
@@ -28,6 +29,10 @@ export function TodayScreen({ navigation, route }: Props) {
   const todayCount = todayLog?.count ?? 0;
 
   const [count, setCount] = useState(todayCount);
+  // 沉浸模式回來或外部更新 dailyLogs 時，把本地 count 同步成最新 store 值
+  useEffect(() => {
+    setCount(todayCount);
+  }, [todayCount]);
   const muted = useStore((s) => s.muted);
   const setMuted = useStore((s) => s.setMuted);
   const [sutraOpen, setSutraOpen] = useState(false);
@@ -68,7 +73,7 @@ export function TodayScreen({ navigation, route }: Props) {
     return Array.from({ length: 7 }, (_, i) => {
       const d = new Date(now);
       d.setDate(d.getDate() - (6 - i));
-      const dateStr = d.toISOString().split('T')[0];
+      const dateStr = formatLocalDate(d);
       const log = dailyLogs.find((l) => l.planId === route.params.planId && l.date === dateStr);
       return {
         date: dateStr,

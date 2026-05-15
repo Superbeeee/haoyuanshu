@@ -16,6 +16,7 @@ import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
 import { PaperBg } from '../components/PaperBg';
 import { DragStepper } from '../components/DragStepper';
 import { scheduleDailyReminder } from '../utils/notifications';
+import { formatLocalDate } from '../utils/date';
 import { PlanStackParamList } from '../navigation/types';
 
 type Props = NativeStackScreenProps<PlanStackParamList, 'CreatePlan'>;
@@ -90,10 +91,11 @@ export function CreatePlanScreen({ navigation }: Props) {
         : dedicatedToValue;
     const planId = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 
-    await scheduleDailyReminder(planId, name, normalizedReminder);
+    const notificationId = await scheduleDailyReminder(planId, name, normalizedReminder);
 
     addPlan({
       id: planId,
+      notificationId: notificationId ?? undefined,
       name: name.trim(),
       dedicatedTo: finalDedicatedTo,
       daily: planType === 'casual' ? 0 : daily,
@@ -102,7 +104,7 @@ export function CreatePlanScreen({ navigation }: Props) {
       color: colorValue,
       seal: SEAL_MAP[colorKey] || '願',
       note,
-      startDate: new Date().toISOString().split('T')[0],
+      startDate: formatLocalDate(),
       reminder: normalizedReminder,
       status: 'active',
       planType,

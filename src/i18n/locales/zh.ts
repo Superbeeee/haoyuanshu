@@ -19,6 +19,28 @@ export const zh = {
     dailySubtitle: 'Daily Practice',
     dailyDesc: '隨心記錄每日念誦，無目標約束，純粹修行',
   },
+  settings: {
+    back: '返回',
+    title: '設定',
+    sectionAppearance: '外觀',
+    sectionLanguage: '語言',
+    sectionReminders: '提醒',
+    sectionData: '資料',
+    sectionAbout: '關於',
+    light: '淺色模式',
+    dark: '深色模式',
+    systemDefault: '跟隨系統',
+    noActivePlan: '目前無進行中計劃',
+    dailyReminder: '每日 {{time}}',
+    clearData: '清除所有資料',
+    version: '版本',
+    tagline: '一念一功德',
+    clearTitle: '清除所有資料',
+    clearMessage: '此操作不可復原，所有計劃、記錄與設定將被永久刪除。',
+    clearConfirm: '確認清除',
+    reminderFailTitle: '無法啟用提醒',
+    reminderFailMessage: '請確認系統通知權限是否開啟。',
+  },
 };
 
 export type Translation = typeof zh;

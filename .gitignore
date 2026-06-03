@@ -26,9 +26,17 @@ npm-debug.*
 yarn-debug.*
 yarn-error.*
 
+# build artefacts
+build/
+
 # macOS
 .DS_Store
 *.pem
+
+# Editor
+.vscode/
+.idea/
+*.swp
 
 # local env files
 .env
@@ -40,3 +48,6 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Claude Code 本地工作目錄（含對話、記憶、暫存）
+.claude/

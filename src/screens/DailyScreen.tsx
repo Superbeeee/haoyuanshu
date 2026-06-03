@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
-import { Audio } from 'expo-av';
+import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTheme } from '../theme/useTheme';
 import { useStore } from '../store';
@@ -35,28 +35,22 @@ export function DailyScreen({ navigation }: Props) {
   const totalCount = dailyLogs.reduce((s, l) => s + l.count, 0);
 
   // 叮聲
-  const dingRef = useRef<Audio.Sound | null>(null);
+  const dingRef = useRef<AudioPlayer | null>(null);
   useEffect(() => {
-    let mounted = true;
-    Audio.Sound.createAsync(dingWav)
-      .then(({ sound }) => {
-        if (mounted) dingRef.current = sound;
-        else sound.unloadAsync();
-      })
-      .catch(() => {});
+    const player = createAudioPlayer(dingWav);
+    dingRef.current = player;
     return () => {
-      mounted = false;
-      dingRef.current?.unloadAsync();
+      player.remove();
       dingRef.current = null;
     };
   }, []);
-  const playDing = useCallback(async () => {
+  const playDing = useCallback(() => {
     if (muted) return;
     try {
       const s = dingRef.current;
       if (!s) return;
-      await s.setPositionAsync(0);
-      await s.playAsync();
+      s.seekTo(0);
+      s.play();
     } catch {}
   }, [muted]);
 

@@ -1,6 +1,6 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Pressable, StyleSheet, Animated } from 'react-native';
-import { Audio } from 'expo-av';
+import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
 import { useTheme } from '../theme/useTheme';
 
 const woodfishImg = require('../../assets/woodfish-cutout.png');
@@ -28,17 +28,25 @@ export function Woodfish({ size = 220, muted = false }: Props) {
   ).current;
   const rippleIdx = useRef(0);
 
-  const soundRef = useRef<Audio.Sound | null>(null);
+  const soundRef = useRef<AudioPlayer | null>(null);
 
-  const loadAndPlay = useCallback(async () => {
+  // 卸載時釋放音訊資源
+  useEffect(() => {
+    return () => {
+      soundRef.current?.remove();
+      soundRef.current = null;
+    };
+  }, []);
+
+  const loadAndPlay = useCallback(() => {
     if (muted) return;
     try {
       if (!soundRef.current) {
-        const { sound } = await Audio.Sound.createAsync(woodfishWav);
-        soundRef.current = sound;
+        soundRef.current = createAudioPlayer(woodfishWav);
       }
-      await soundRef.current.setPositionAsync(0);
-      await soundRef.current.playAsync();
+      // 從頭播放，連續快點時打斷前一聲重來
+      soundRef.current.seekTo(0);
+      soundRef.current.play();
     } catch {}
   }, [muted]);
 

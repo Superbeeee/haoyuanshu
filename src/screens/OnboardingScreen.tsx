@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { useTheme } from '../theme/useTheme';
 import { useStore } from '../store';
-import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
+import { FONT_HANZI_MEDIUM } from '../theme/tokens';
+import { t } from '../i18n';
 import { PaperBg } from '../components/PaperBg';
 import { Seal } from '../components/Seal';
 
@@ -24,13 +25,13 @@ export function OnboardingScreen() {
           <Text
             style={[
               styles.title,
-              { color: T.ink, fontFamily: FONT_SERIF_MEDIUM },
+              { color: T.ink, fontFamily: FONT_HANZI_MEDIUM },
             ]}
           >
-            好 願 書
+            好願書
           </Text>
-          <Text style={[styles.subtitle, { color: T.inkMuted }]}>
-            一念一功德
+          <Text style={[styles.subtitle, { color: T.inkMuted, letterSpacing: T.tracking.widest }]}>
+            {t('onboarding.tagline')}
           </Text>
         </View>
 
@@ -53,13 +54,13 @@ export function OnboardingScreen() {
                 <Text
                   style={[
                     styles.cardTitle,
-                    { color: T.ink, fontFamily: FONT_SERIF_MEDIUM },
+                    { color: T.ink, fontFamily: T.fontSerifMedium, letterSpacing: T.tracking.wide },
                   ]}
                 >
-                  發願計劃
+                  {t('onboarding.planTitle')}
                 </Text>
                 <Text style={[styles.cardSub, { color: T.inkMuted }]}>
-                  Structured Vow
+                  {t('onboarding.planSubtitle')}
                 </Text>
               </View>
               <Text style={{ color: T.inkFaint, fontSize: 18 }}>›</Text>
@@ -68,7 +69,7 @@ export function OnboardingScreen() {
               <Text
                 style={[styles.descText, { color: T.inkMuted }]}
               >
-                設定每日遍數、持續天數，以計劃形式記錄念誦功德
+                {t('onboarding.planDesc')}
               </Text>
             </View>
           </Pressable>
@@ -90,13 +91,13 @@ export function OnboardingScreen() {
                 <Text
                   style={[
                     styles.cardTitle,
-                    { color: T.ink, fontFamily: FONT_SERIF_MEDIUM },
+                    { color: T.ink, fontFamily: T.fontSerifMedium, letterSpacing: T.tracking.wide },
                   ]}
                 >
-                  日常記錄
+                  {t('onboarding.dailyTitle')}
                 </Text>
                 <Text style={[styles.cardSub, { color: T.inkMuted }]}>
-                  Daily Practice
+                  {t('onboarding.dailySubtitle')}
                 </Text>
               </View>
               <Text style={{ color: T.inkFaint, fontSize: 18 }}>›</Text>
@@ -105,7 +106,7 @@ export function OnboardingScreen() {
               <Text
                 style={[styles.descText, { color: T.inkMuted }]}
               >
-                隨心記錄每日念誦，無目標約束，純粹修行
+                {t('onboarding.dailyDesc')}
               </Text>
             </View>
           </Pressable>
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
   content: { flex: 1, padding: 20, justifyContent: 'center' },
   header: { alignItems: 'center', marginBottom: 48 },
   title: { fontSize: 32, letterSpacing: 12, marginTop: 16 },
-  subtitle: { fontSize: 13, letterSpacing: 6, marginTop: 8 },
+  subtitle: { fontSize: 13, marginTop: 8 },
   cards: { gap: 16 },
   card: {
     borderWidth: 1,
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   cardText: { flex: 1 },
-  cardTitle: { fontSize: 19, letterSpacing: 3, marginBottom: 4 },
+  cardTitle: { fontSize: 19, marginBottom: 4 },
   cardSub: { fontSize: 13, letterSpacing: 1 },
   cardDesc: { marginTop: 16, paddingTop: 14, borderTopWidth: 1 },
   descText: { fontSize: 13, lineHeight: 22, letterSpacing: 1 },

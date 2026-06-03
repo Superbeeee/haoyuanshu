@@ -10,4 +10,13 @@ export const ja: Translation = {
     times: '遍',
     day: '日',
   },
+  onboarding: {
+    tagline: '一念一功徳',
+    planTitle: '発願プラン',
+    planSubtitle: 'Structured Vow',
+    planDesc: '毎日の回数と期間を設定し、念誦をプランとして記録します',
+    dailyTitle: '日常記録',
+    dailySubtitle: 'Daily Practice',
+    dailyDesc: '目標にとらわれず、日々の念誦を自由に記録する純粋な修行',
+  },
 };

@@ -6,10 +6,14 @@
 ## Scope
 
 What this wiki covers:
-- <describe the topic area>
+- 好願書 app 的技術決策與選型（依賴、平台、架構取捨）
+- 開發過程踩過的坑與其解法
+- 外部素材（文章、文件）的摘要
 
 What this wiki deliberately excludes:
-- <describe out-of-scope areas>
+- 程式碼結構與實作細節（看 `src/` 與 git history）
+- 規格變更提案（看 `openspec/`）
+- 一次性對話內容
 
 ## Operations
 
@@ -35,10 +39,9 @@ All pages require YAML frontmatter: `title`, `type`, `created`, `updated`, `sour
 
 ## Current articles
 
-*None yet — update this list after every compile.*
-
 ### Concepts
-*(none)*
+- `Audio Playback Stack` — 音效播放選型與 expo-av → expo-audio 遷移
+- `Expo SDK 54 Dependency Alignment` — 套件版本對齊原則
 
 ### Entities
 *(none)*

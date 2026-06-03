@@ -32,6 +32,7 @@ export const ko: Translation = {
     systemDefault: '시스템 설정 따름',
     noActivePlan: '진행 중인 플랜이 없습니다',
     dailyReminder: '매일 {{time}}',
+    reminderEnabled: '{{count}}개',
     clearData: '모든 데이터 삭제',
     version: '버전',
     tagline: '한 생각 한 공덕',

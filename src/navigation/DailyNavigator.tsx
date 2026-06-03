@@ -5,6 +5,7 @@ import { DailyScreen } from '../screens/DailyScreen';
 import { ArchiveScreen } from '../screens/ArchiveScreen';
 import { SettingsScreen } from '../screens/SettingsScreen';
 import { LanguageScreen } from '../screens/LanguageScreen';
+import { ReminderScreen } from '../screens/ReminderScreen';
 
 const Stack = createNativeStackNavigator<DailyStackParamList>();
 
@@ -15,6 +16,7 @@ export function DailyNavigator() {
       <Stack.Screen name="Archive" component={ArchiveScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen name="Language" component={LanguageScreen} />
+      <Stack.Screen name="Reminder" component={ReminderScreen} />
     </Stack.Navigator>
   );
 }

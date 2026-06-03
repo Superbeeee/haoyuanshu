@@ -32,6 +32,7 @@ export const en: Translation = {
     systemDefault: 'System default',
     noActivePlan: 'No active plan',
     dailyReminder: 'Daily at {{time}}',
+    reminderEnabled: '{{count}} on',
     clearData: 'Clear all data',
     version: 'Version',
     tagline: 'One thought, one merit',

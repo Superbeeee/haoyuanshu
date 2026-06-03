@@ -32,6 +32,7 @@ export const zh = {
     systemDefault: '跟隨系統',
     noActivePlan: '目前無進行中計劃',
     dailyReminder: '每日 {{time}}',
+    reminderEnabled: '{{count}} 個',
     clearData: '清除所有資料',
     version: '版本',
     tagline: '一念一功德',

@@ -32,6 +32,7 @@ export const ja: Translation = {
     systemDefault: 'システムに従う',
     noActivePlan: '進行中のプランはありません',
     dailyReminder: '毎日 {{time}}',
+    reminderEnabled: '{{count}} 件',
     clearData: 'すべてのデータを消去',
     version: 'バージョン',
     tagline: '一念一功徳',

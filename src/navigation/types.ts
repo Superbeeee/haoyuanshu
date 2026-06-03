@@ -11,6 +11,7 @@ export type PlanStackParamList = {
   Archive: undefined;
   Settings: undefined;
   Language: undefined;
+  Reminder: undefined;
 };
 
 export type DailyStackParamList = {
@@ -18,4 +19,5 @@ export type DailyStackParamList = {
   Archive: undefined;
   Settings: undefined;
   Language: undefined;
+  Reminder: undefined;
 };

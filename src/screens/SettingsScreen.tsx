@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { View, Text, Pressable, Alert, ScrollView, StyleSheet, Switch } from 'react-native';
+import { View, Text, Pressable, Alert, ScrollView, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTheme } from '../theme/useTheme';
@@ -8,11 +8,7 @@ import { FONT_HANZI } from '../theme/tokens';
 import { t, LANGUAGE_NATIVE_NAMES } from '../i18n';
 import { PaperBg } from '../components/PaperBg';
 import { Hairline } from '../components/Hairline';
-import {
-  cancelAllReminders,
-  cancelReminder,
-  scheduleDailyReminder,
-} from '../utils/notifications';
+import { cancelAllReminders } from '../utils/notifications';
 import { PlanStackParamList, DailyStackParamList } from '../navigation/types';
 
 type SettingsScreenProps =
@@ -22,7 +18,6 @@ type SettingsScreenProps =
 export function SettingsScreen({ navigation }: SettingsScreenProps) {
   const { T, theme } = useTheme();
   const updateSettings = useStore((s) => s.updateSettings);
-  const updatePlan = useStore((s) => s.updatePlan);
   const clearAll = useStore((s) => s.clearAll);
   const currentLanguage = useStore((s) => s.settings.language);
   // 兩個 stack 都有 Language route，統一型別以便 navigate（union navigation 無法直接調用）
@@ -32,28 +27,13 @@ export function SettingsScreen({ navigation }: SettingsScreenProps) {
     () => plans.filter((p) => p.status === 'active'),
     [plans]
   );
+  const enabledReminders = useMemo(
+    () => activePlans.filter((p) => p.notificationId).length,
+    [activePlans]
+  );
 
   const handleThemeChange = (next: 'light' | 'dark') => {
     updateSettings({ theme: next });
-  };
-
-  const handleToggleReminder = async (planId: string, enable: boolean) => {
-    const plan = activePlans.find((p) => p.id === planId);
-    if (!plan) return;
-
-    if (enable) {
-      const id = await scheduleDailyReminder(plan.id, plan.name, plan.reminder);
-      if (id) {
-        updatePlan(plan.id, { notificationId: id });
-      } else {
-        Alert.alert(t('settings.reminderFailTitle'), t('settings.reminderFailMessage'));
-      }
-    } else {
-      if (plan.notificationId) {
-        await cancelReminder(plan.notificationId);
-      }
-      updatePlan(plan.id, { notificationId: undefined });
-    }
   };
 
   const handleClear = () => {
@@ -142,50 +122,20 @@ export function SettingsScreen({ navigation }: SettingsScreenProps) {
         <Text style={[styles.sectionLabel, { color: T.inkMuted }]}>
           {t('settings.sectionReminders')}
         </Text>
-        <View
-          style={[
-            styles.card,
-            { backgroundColor: T.bgElevated, borderColor: T.hairline },
-          ]}
-        >
-          {activePlans.length === 0 ? (
-            <View style={styles.row}>
+        <View style={[styles.card, { backgroundColor: T.bgElevated, borderColor: T.hairline }]}>
+          <Pressable onPress={() => nav.navigate('Reminder')} style={styles.row}>
+            <Text style={[styles.rowText, { color: T.ink, fontFamily: T.fontSerif }]}>
+              {t('settings.sectionReminders')}
+            </Text>
+            <View style={styles.rowValueGroup}>
               <Text style={[styles.rowValue, { color: T.inkMuted }]}>
-                {t('settings.noActivePlan')}
+                {activePlans.length === 0
+                  ? '—'
+                  : t('settings.reminderEnabled', { count: enabledReminders })}
               </Text>
+              <Text style={{ color: T.inkFaint, fontSize: 16 }}>›</Text>
             </View>
-          ) : (
-            activePlans.map((p, i) => {
-              const enabled = !!p.notificationId;
-              return (
-                <View key={p.id}>
-                  {i > 0 && <Hairline />}
-                  <View style={styles.row}>
-                    <View style={{ flex: 1 }}>
-                      <Text
-                        style={[
-                          styles.rowText,
-                          { color: T.ink, fontFamily: T.fontSerif },
-                        ]}
-                        numberOfLines={1}
-                      >
-                        {p.name}
-                      </Text>
-                      <Text style={[styles.rowSubText, { color: T.inkMuted }]}>
-                        {t('settings.dailyReminder', { time: p.reminder })}
-                      </Text>
-                    </View>
-                    <Switch
-                      value={enabled}
-                      onValueChange={(v) => handleToggleReminder(p.id, v)}
-                      trackColor={{ false: T.hairlineStrong, true: T.vermilion }}
-                      thumbColor={T.bg}
-                    />
-                  </View>
-                </View>
-              );
-            })
-          )}
+          </Pressable>
         </View>
 
         {/* 資料 */}

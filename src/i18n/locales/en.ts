@@ -74,4 +74,13 @@ export const en: Translation = {
     title: 'A momentary hindrance',
     restart: 'Restart',
   },
+  datePicker: {
+    title: 'Select date',
+    subtitle: 'Last {{days}} days · tap to edit',
+    today: 'Today',
+    close: 'Close',
+  },
+  woodfish: {
+    tapLabel: 'Tap woodfish',
+  },
 };

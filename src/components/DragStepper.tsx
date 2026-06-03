@@ -9,7 +9,7 @@ import {
   Animated,
 } from 'react-native';
 import { useTheme } from '../theme/useTheme';
-import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
+import { t } from '../i18n';
 
 // 每 DRAG_UNIT 像素 = 1 個單位
 const DRAG_UNIT = 10;
@@ -98,7 +98,7 @@ export function DragStepper({
         <Text
           style={[
             styles.displayNum,
-            { color: T.ink, fontFamily: FONT_SERIF_MEDIUM },
+            { color: T.ink, fontFamily: T.fontSerifMedium },
           ]}
         >
           {value}
@@ -106,7 +106,7 @@ export function DragStepper({
         <Text
           style={[
             styles.displaySuffix,
-            { color: T.inkMuted, fontFamily: FONT_SERIF },
+            { color: T.inkMuted, fontFamily: T.fontSerif },
           ]}
         >
           {suffix}
@@ -145,7 +145,7 @@ export function DragStepper({
                 <Text
                   style={[
                     styles.bigNum,
-                    { color: T.ink, fontFamily: FONT_SERIF_MEDIUM },
+                    { color: T.ink, fontFamily: T.fontSerifMedium },
                   ]}
                 >
                   {draft}
@@ -153,7 +153,7 @@ export function DragStepper({
                 <Text
                   style={[
                     styles.bigSuffix,
-                    { color: T.inkMuted, fontFamily: FONT_SERIF },
+                    { color: T.inkMuted, fontFamily: T.fontSerif },
                   ]}
                 >
                   {suffix}
@@ -166,7 +166,7 @@ export function DragStepper({
                   { color: T.inkMuted, opacity: hintAnim },
                 ]}
               >
-                上下滑動調整
+                {t('countEditor.dragHint')}
               </Animated.Text>
             </View>
 
@@ -176,7 +176,7 @@ export function DragStepper({
                 style={[styles.cancelBtn, { borderColor: T.hairlineStrong }]}
               >
                 <Text style={[styles.cancelText, { color: T.inkMuted }]}>
-                  取 消
+                  {t('common.cancel')}
                 </Text>
               </Pressable>
               <Pressable
@@ -186,10 +186,10 @@ export function DragStepper({
                 <Text
                   style={[
                     styles.confirmText,
-                    { color: T.bg, fontFamily: FONT_SERIF_MEDIUM },
+                    { color: T.bg, fontFamily: T.fontSerifMedium },
                   ]}
                 >
-                  確 認
+                  {t('common.confirm')}
                 </Text>
               </Pressable>
             </View>

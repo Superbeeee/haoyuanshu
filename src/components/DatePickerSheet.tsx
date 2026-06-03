@@ -8,8 +8,8 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useTheme } from '../theme/useTheme';
-import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
-import { formatLocalDate } from '../utils/date';
+import { t } from '../i18n';
+import { formatLocalDate, weekdayLabel } from '../utils/date';
 
 type Props = {
   visible: boolean;
@@ -19,8 +19,6 @@ type Props = {
   days?: number; // 預設 90
   accentColor?: string;
 };
-
-const DAY_NAMES = ['日', '一', '二', '三', '四', '五', '六'];
 
 export function DatePickerSheet({
   visible,
@@ -45,7 +43,7 @@ export function DatePickerSheet({
         count: counts[dateStr] ?? 0,
         month: d.getMonth() + 1,
         day: d.getDate(),
-        weekday: DAY_NAMES[d.getDay()],
+        weekday: weekdayLabel(d),
         isToday: dateStr === todayStr,
       };
     });
@@ -68,11 +66,11 @@ export function DatePickerSheet({
         >
           <View style={[styles.handle, { backgroundColor: T.hairlineStrong }]} />
           <View style={styles.header}>
-            <Text style={[styles.title, { color: T.ink, fontFamily: FONT_SERIF_MEDIUM }]}>
-              選 擇 日 期
+            <Text style={[styles.title, { color: T.ink, fontFamily: T.fontSerifMedium }]}>
+              {t('datePicker.title')}
             </Text>
             <Text style={[styles.subtitle, { color: T.inkMuted }]}>
-              近 {days} 日 · 點選以編輯遍數
+              {t('datePicker.subtitle', { days })}
             </Text>
           </View>
 
@@ -100,28 +98,28 @@ export function DatePickerSheet({
                         styles.dateText,
                         {
                           color: T.ink,
-                          fontFamily: FONT_SERIF_MEDIUM,
+                          fontFamily: T.fontSerifMedium,
                         },
                       ]}
                     >
                       {d.month}/{d.day}
                       {d.isToday && (
-                        <Text style={{ color: accent, fontSize: 11 }}>  · 今日</Text>
+                        <Text style={{ color: accent, fontSize: 11 }}>{`  · ${t('datePicker.today')}`}</Text>
                       )}
                     </Text>
                     <Text style={[styles.weekday, { color: T.inkFaint }]}>
-                      週{d.weekday} · {d.date}
+                      {d.weekday} · {d.date}
                     </Text>
                   </View>
                 </View>
                 <Text
                   style={[
                     styles.countText,
-                    { color: T.ink, fontFamily: FONT_SERIF },
+                    { color: T.ink, fontFamily: T.fontSerif },
                   ]}
                 >
                   {d.count}
-                  <Text style={{ color: T.inkFaint, fontSize: 11 }}> 遍</Text>
+                  <Text style={{ color: T.inkFaint, fontSize: 11 }}>{` ${t('common.times')}`}</Text>
                 </Text>
               </Pressable>
             ))}
@@ -131,7 +129,7 @@ export function DatePickerSheet({
             onPress={onClose}
             style={[styles.closeBtn, { borderColor: T.hairlineStrong }]}
           >
-            <Text style={[styles.closeText, { color: T.inkMuted }]}>關 閉</Text>
+            <Text style={[styles.closeText, { color: T.inkMuted }]}>{t('datePicker.close')}</Text>
           </Pressable>
         </Pressable>
       </Pressable>

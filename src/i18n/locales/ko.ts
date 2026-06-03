@@ -74,4 +74,13 @@ export const ko: Translation = {
     title: '일시적인 오류가 발생했습니다',
     restart: '다시 시작',
   },
+  datePicker: {
+    title: '날짜 선택',
+    subtitle: '최근 {{days}}일 · 탭하여 편집',
+    today: '오늘',
+    close: '닫기',
+  },
+  woodfish: {
+    tapLabel: '목어 두드리기',
+  },
 };

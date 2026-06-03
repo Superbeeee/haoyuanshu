@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { Pressable, StyleSheet, Animated } from 'react-native';
 import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
 import { useTheme } from '../theme/useTheme';
+import { t } from '../i18n';
 
 const woodfishImg = require('../../assets/woodfish-cutout.png');
 const woodfishWav = require('../../assets/woodfish.wav');
@@ -104,7 +105,7 @@ export function Woodfish({ size = 220, muted = false }: Props) {
     <Pressable
       onPress={handlePress}
       style={[styles.container, { width: size, height: size }]}
-      accessibilityLabel="敲木魚"
+      accessibilityLabel={t('woodfish.tapLabel')}
       accessibilityRole="button"
     >
       {/* 柔光（每次敲擊閃一下） */}

@@ -74,6 +74,15 @@ export const zh = {
     title: '程式暫遇阻滯',
     restart: '重新開始',
   },
+  datePicker: {
+    title: '選擇日期',
+    subtitle: '近 {{days}} 日 · 點選以編輯遍數',
+    today: '今日',
+    close: '關閉',
+  },
+  woodfish: {
+    tapLabel: '敲木魚',
+  },
 };
 
 export type Translation = typeof zh;

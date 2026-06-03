@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../theme/useTheme';
-import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
+import { FONT_HANZI, FONT_HANZI_MEDIUM } from '../theme/tokens';
 
 type SutraLine = { t: string; big?: boolean; mantra?: boolean };
 
@@ -146,9 +146,9 @@ export function SutraSheet({ visible, onClose }: Props) {
           <Text style={{ color: T.inkSoft, fontSize: 20 }}>✕</Text>
         </Pressable>
         <Text
-          style={[styles.title, { color: T.ink, fontFamily: FONT_SERIF }]}
+          style={[styles.title, { color: T.ink, fontFamily: FONT_HANZI }]}
         >
-          心 經
+          心經
         </Text>
         <View style={styles.fontButtons}>
           <Pressable
@@ -158,10 +158,10 @@ export function SutraSheet({ visible, onClose }: Props) {
             <Text
               style={[
                 styles.fontBtnText,
-                { color: T.inkSoft, fontFamily: FONT_SERIF },
+                { color: T.inkSoft, fontFamily: FONT_HANZI },
               ]}
             >
-              小
+              A−
             </Text>
           </Pressable>
           <Pressable
@@ -174,11 +174,11 @@ export function SutraSheet({ visible, onClose }: Props) {
                 {
                   color: T.inkSoft,
                   fontSize: 16,
-                  fontFamily: FONT_SERIF,
+                  fontFamily: FONT_HANZI,
                 },
               ]}
             >
-              大
+              A+
             </Text>
           </Pressable>
         </View>
@@ -194,7 +194,7 @@ export function SutraSheet({ visible, onClose }: Props) {
           <Text
             key={i}
             style={{
-              fontFamily: line.big ? FONT_SERIF_MEDIUM : FONT_SERIF,
+              fontFamily: line.big ? FONT_HANZI_MEDIUM : FONT_HANZI,
               fontSize: line.big ? 22 : fontSize,
               color: line.mantra ? T.vermilion : T.ink,
               lineHeight: (line.big ? 22 : fontSize) * 2,
@@ -211,7 +211,7 @@ export function SutraSheet({ visible, onClose }: Props) {
         <Text
           style={[
             styles.endMark,
-            { color: T.inkFaint, fontFamily: FONT_SERIF },
+            { color: T.inkFaint, fontFamily: FONT_HANZI },
           ]}
         >
           · 終 ·

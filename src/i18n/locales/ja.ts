@@ -74,4 +74,13 @@ export const ja: Translation = {
     title: '一時的な問題が発生しました',
     restart: '再起動',
   },
+  datePicker: {
+    title: '日付を選択',
+    subtitle: '直近 {{days}} 日 · タップして編集',
+    today: '今日',
+    close: '閉じる',
+  },
+  woodfish: {
+    tapLabel: '木魚を叩く',
+  },
 };

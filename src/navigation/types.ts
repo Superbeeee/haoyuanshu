@@ -10,10 +10,12 @@ export type PlanStackParamList = {
   Complete: { planId: string };
   Archive: undefined;
   Settings: undefined;
+  Language: undefined;
 };
 
 export type DailyStackParamList = {
   DailyMain: undefined;
   Archive: undefined;
   Settings: undefined;
+  Language: undefined;
 };

@@ -1,12 +1,11 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, Pressable, Alert, ScrollView, StyleSheet, Switch } from 'react-native';
 import Constants from 'expo-constants';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTheme } from '../theme/useTheme';
 import { useStore } from '../store';
 import { FONT_HANZI } from '../theme/tokens';
-import { t, resolveLanguage, SUPPORTED_LANGUAGES, type Language } from '../i18n';
-import { ensureFontsLoaded } from '../theme/fonts';
+import { t, LANGUAGE_NATIVE_NAMES } from '../i18n';
 import { PaperBg } from '../components/PaperBg';
 import { Hairline } from '../components/Hairline';
 import {
@@ -25,39 +24,18 @@ export function SettingsScreen({ navigation }: SettingsScreenProps) {
   const updateSettings = useStore((s) => s.updateSettings);
   const updatePlan = useStore((s) => s.updatePlan);
   const clearAll = useStore((s) => s.clearAll);
-  const setLanguage = useStore((s) => s.setLanguage);
   const currentLanguage = useStore((s) => s.settings.language);
+  // 兩個 stack 都有 Language route，統一型別以便 navigate（union navigation 無法直接調用）
+  const nav = navigation as NativeStackScreenProps<PlanStackParamList, 'Settings'>['navigation'];
   const plans = useStore((s) => s.plans);
   const activePlans = useMemo(
     () => plans.filter((p) => p.status === 'active'),
     [plans]
   );
 
-  // 語言列表顯示各語言原生名稱，預載全部字型以正確渲染（諺文 / 假名等）
-  const [, forceTick] = useState(0);
-  useEffect(() => {
-    Promise.all(SUPPORTED_LANGUAGES.map((l) => ensureFontsLoaded(l))).then(() =>
-      forceTick((n) => n + 1)
-    );
-  }, []);
-
   const handleThemeChange = (next: 'light' | 'dark') => {
     updateSettings({ theme: next });
   };
-
-  // 先載入目標語言字型再切換，避免切換瞬間字體閃爍
-  const handleLanguage = async (lang: Language | null) => {
-    await ensureFontsLoaded(resolveLanguage(lang));
-    setLanguage(lang);
-  };
-
-  const LANG_OPTIONS: { key: Language | null; label: string }[] = [
-    { key: null, label: t('settings.systemDefault') },
-    { key: 'zh', label: '繁體中文' },
-    { key: 'en', label: 'English' },
-    { key: 'ja', label: '日本語' },
-    { key: 'ko', label: '한국어' },
-  ];
 
   const handleToggleReminder = async (planId: string, enable: boolean) => {
     const plan = activePlans.find((p) => p.id === planId);
@@ -145,22 +123,19 @@ export function SettingsScreen({ navigation }: SettingsScreenProps) {
         {/* 語言 */}
         <Text style={[styles.sectionLabel, { color: T.inkMuted }]}>{t('settings.sectionLanguage')}</Text>
         <View style={[styles.card, { backgroundColor: T.bgElevated, borderColor: T.hairline }]}>
-          {LANG_OPTIONS.map((opt, i) => {
-            const selected = currentLanguage === opt.key;
-            return (
-              <View key={opt.key ?? 'system'}>
-                {i > 0 && <Hairline />}
-                <Pressable onPress={() => handleLanguage(opt.key)} style={styles.row}>
-                  <Text style={[styles.rowText, { color: T.ink, fontFamily: T.fontSerif }]}>
-                    {opt.label}
-                  </Text>
-                  {selected && (
-                    <Text style={{ color: T.vermilion, fontSize: 16 }}>✓</Text>
-                  )}
-                </Pressable>
-              </View>
-            );
-          })}
+          <Pressable onPress={() => nav.navigate('Language')} style={styles.row}>
+            <Text style={[styles.rowText, { color: T.ink, fontFamily: T.fontSerif }]}>
+              {t('settings.sectionLanguage')}
+            </Text>
+            <View style={styles.rowValueGroup}>
+              <Text style={[styles.rowValue, { color: T.inkMuted }]}>
+                {currentLanguage
+                  ? LANGUAGE_NATIVE_NAMES[currentLanguage]
+                  : t('settings.systemDefault')}
+              </Text>
+              <Text style={{ color: T.inkFaint, fontSize: 16 }}>›</Text>
+            </View>
+          </Pressable>
         </View>
 
         {/* 提醒 */}
@@ -259,4 +234,5 @@ const styles = StyleSheet.create({
   rowText: { fontSize: 15, letterSpacing: 2 },
   rowSubText: { fontSize: 12, letterSpacing: 1, marginTop: 4 },
   rowValue: { fontSize: 13 },
+  rowValueGroup: { flexDirection: 'row', alignItems: 'center', gap: 6 },
 });

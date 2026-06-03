@@ -9,6 +9,14 @@ import { ko } from './locales/ko';
 export const SUPPORTED_LANGUAGES = ['zh', 'en', 'ja', 'ko'] as const;
 export type Language = (typeof SUPPORTED_LANGUAGES)[number];
 
+// 各語言原生名稱（用於語言選單顯示，不翻譯）
+export const LANGUAGE_NATIVE_NAMES: Record<Language, string> = {
+  zh: '繁體中文',
+  en: 'English',
+  ja: '日本語',
+  ko: '한국어',
+};
+
 export const i18n = new I18n({ zh, en, ja, ko });
 i18n.defaultLocale = 'zh';
 i18n.enableFallback = true; // 缺漏的 key 回退至 zh，而非顯示 key

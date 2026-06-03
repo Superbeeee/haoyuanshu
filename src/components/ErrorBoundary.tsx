@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
-import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
+import { FONT_HANZI, FONT_HANZI_MEDIUM } from '../theme/tokens';
+import { t } from '../i18n';
 
 type Props = {
   children: React.ReactNode;
@@ -31,7 +32,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>程 式 暫 遇 阻 滯</Text>
+        <Text style={styles.title}>{t('error.title')}</Text>
         <Text style={styles.subtitle}>SOMETHING WENT WRONG</Text>
         {__DEV__ && this.state.error && (
           <Text style={styles.detail} numberOfLines={6}>
@@ -39,7 +40,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
           </Text>
         )}
         <Pressable onPress={this.reset} style={styles.btn}>
-          <Text style={styles.btnText}>重 新 開 始</Text>
+          <Text style={styles.btnText}>{t('error.restart')}</Text>
         </Pressable>
       </View>
     );
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     letterSpacing: 6,
     color: '#1F1B14',
-    fontFamily: FONT_SERIF_MEDIUM,
+    fontFamily: FONT_HANZI_MEDIUM,
   },
   subtitle: {
     fontSize: 11,
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
     fontSize: 12,
     color: 'rgba(31,27,20,0.6)',
-    fontFamily: FONT_SERIF,
+    fontFamily: FONT_HANZI,
     textAlign: 'center',
     lineHeight: 18,
   },
@@ -86,6 +87,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     letterSpacing: 4,
     color: '#B33A2B',
-    fontFamily: FONT_SERIF_MEDIUM,
+    fontFamily: FONT_HANZI_MEDIUM,
   },
 });

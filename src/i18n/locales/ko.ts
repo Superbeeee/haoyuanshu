@@ -65,4 +65,13 @@ export const ko: Translation = {
     editOtherDates: '다른 날짜 편집',
     back: '플랜',
   },
+  countEditor: {
+    title: '횟수 편집',
+    dragHint: '위아래로 드래그하여 조정',
+    reset: '초기화',
+  },
+  error: {
+    title: '일시적인 오류가 발생했습니다',
+    restart: '다시 시작',
+  },
 };

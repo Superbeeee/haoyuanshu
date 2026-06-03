@@ -65,6 +65,15 @@ export const zh = {
     editOtherDates: '編輯其他日期',
     back: '計劃',
   },
+  countEditor: {
+    title: '編輯遍數',
+    dragHint: '上下滑動調整',
+    reset: '歸零',
+  },
+  error: {
+    title: '程式暫遇阻滯',
+    restart: '重新開始',
+  },
 };
 
 export type Translation = typeof zh;

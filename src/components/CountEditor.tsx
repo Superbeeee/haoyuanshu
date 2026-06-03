@@ -9,7 +9,7 @@ import {
   Animated,
 } from 'react-native';
 import { useTheme } from '../theme/useTheme';
-import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
+import { t } from '../i18n';
 
 type Props = {
   visible: boolean;
@@ -96,12 +96,12 @@ export function CountEditor({
           onPress={(e) => e.stopPropagation()}
         >
           <Text style={[styles.label, { color: T.inkMuted }]}>
-            編 輯 遍 數
+            {t('countEditor.title')}
           </Text>
           <Text
             style={[
               styles.date,
-              { color: T.ink, fontFamily: FONT_SERIF_MEDIUM },
+              { color: T.ink, fontFamily: T.fontSerifMedium },
             ]}
           >
             {date}
@@ -119,7 +119,7 @@ export function CountEditor({
             <Text
               style={[
                 styles.countNum,
-                { color: T.ink, fontFamily: FONT_SERIF },
+                { color: T.ink, fontFamily: T.fontSerif },
               ]}
             >
               {count}
@@ -131,7 +131,7 @@ export function CountEditor({
                 { color: T.inkMuted, opacity: hintAnim },
               ]}
             >
-              上下滑動調整
+              {t('countEditor.dragHint')}
             </Animated.Text>
           </View>
 
@@ -168,7 +168,7 @@ export function CountEditor({
               onPress={() => updateCount(0)}
               style={[styles.quickBtn, { borderColor: T.hairlineStrong }]}
             >
-              <Text style={[styles.quickText, { color: T.inkSoft }]}>歸零</Text>
+              <Text style={[styles.quickText, { color: T.inkSoft }]}>{t('countEditor.reset')}</Text>
             </Pressable>
           </View>
 
@@ -178,7 +178,7 @@ export function CountEditor({
               style={[styles.cancelBtn, { borderColor: T.hairlineStrong }]}
             >
               <Text style={[styles.cancelText, { color: T.inkMuted }]}>
-                取 消
+                {t('common.cancel')}
               </Text>
             </Pressable>
             <Pressable
@@ -188,10 +188,10 @@ export function CountEditor({
               <Text
                 style={[
                   styles.saveText,
-                  { color: T.bg, fontFamily: FONT_SERIF_MEDIUM },
+                  { color: T.bg, fontFamily: T.fontSerifMedium },
                 ]}
               >
-                儲 存
+                {t('common.save')}
               </Text>
             </Pressable>
           </View>

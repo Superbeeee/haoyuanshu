@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { FONT_SERIF } from '../theme/tokens';
+import { FONT_HANZI } from '../theme/tokens';
 
 type Props = {
   text?: string;
@@ -24,7 +24,7 @@ export function Seal({ text = '願', size = 32, color }: Props) {
       <Text
         style={[
           styles.text,
-          { color, fontSize: size * 0.5, fontFamily: FONT_SERIF },
+          { color, fontSize: size * 0.5, fontFamily: FONT_HANZI },
         ]}
       >
         {text}

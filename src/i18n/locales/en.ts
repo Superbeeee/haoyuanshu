@@ -65,4 +65,13 @@ export const en: Translation = {
     editOtherDates: 'Edit other dates',
     back: 'Plans',
   },
+  countEditor: {
+    title: 'Edit count',
+    dragHint: 'Drag up/down to adjust',
+    reset: 'Reset',
+  },
+  error: {
+    title: 'A momentary hindrance',
+    restart: 'Restart',
+  },
 };

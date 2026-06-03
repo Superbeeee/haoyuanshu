@@ -65,4 +65,13 @@ export const ja: Translation = {
     editOtherDates: '他の日付を編集',
     back: 'プラン',
   },
+  countEditor: {
+    title: '回数を編集',
+    dragHint: '上下にスワイプで調整',
+    reset: 'リセット',
+  },
+  error: {
+    title: '一時的な問題が発生しました',
+    restart: '再起動',
+  },
 };

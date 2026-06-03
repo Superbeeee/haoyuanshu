@@ -12,7 +12,7 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTheme } from '../theme/useTheme';
 import { useStore } from '../store';
-import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
+import { t } from '../i18n';
 import { PaperBg } from '../components/PaperBg';
 import { DragStepper } from '../components/DragStepper';
 import { scheduleDailyReminder } from '../utils/notifications';
@@ -22,11 +22,11 @@ import { PlanStackParamList } from '../navigation/types';
 type Props = NativeStackScreenProps<PlanStackParamList, 'CreatePlan'>;
 
 const COLORS = [
-  { key: 'vermilion', name: '朱砂' },
-  { key: 'gold', name: '赭金' },
-  { key: 'sage', name: '茶綠' },
-  { key: 'wood', name: '木棕' },
-  { key: 'ink', name: '墨黑' },
+  { key: 'vermilion' },
+  { key: 'gold' },
+  { key: 'sage' },
+  { key: 'wood' },
+  { key: 'ink' },
 ] as const;
 
 const SEAL_MAP: Record<string, string> = {
@@ -39,11 +39,11 @@ const SEAL_MAP: Record<string, string> = {
 
 // 對應封存分類：label 是 chip 顯示、name 是實際存進 dedicatedTo（即「為 {name} 而念」）
 const DEDICATIONS = [
-  { key: 'family', label: '為家人', name: '家人', icon: '🏠' },
-  { key: 'self', label: '自迴向', name: '自己', icon: '🙏' },
-  { key: 'beings', label: '為眾生', name: '眾生', icon: '🌍' },
-  { key: 'deceased', label: '為亡者', name: '亡者', icon: '🪷' },
-  { key: 'other', label: '其他自訂', name: '', icon: '✦' },
+  { key: 'family', name: '家人', icon: '🏠' },
+  { key: 'self', name: '自己', icon: '🙏' },
+  { key: 'beings', name: '眾生', icon: '🌍' },
+  { key: 'deceased', name: '亡者', icon: '🪷' },
+  { key: 'other', name: '', icon: '✦' },
 ] as const;
 
 const TIME_RE = /^([01]?\d|2[0-3]):([0-5]?\d)$/;
@@ -118,7 +118,7 @@ export function CreatePlanScreen({ navigation }: Props) {
     {
       color: T.ink,
       borderBottomColor: T.hairlineStrong,
-      fontFamily: FONT_SERIF,
+      fontFamily: T.fontSerif,
     },
   ];
 
@@ -141,10 +141,10 @@ export function CreatePlanScreen({ navigation }: Props) {
           <Text
             style={[
               styles.pageTitle,
-              { color: T.ink, fontFamily: FONT_SERIF_MEDIUM },
+              { color: T.ink, fontFamily: T.fontSerifMedium },
             ]}
           >
-            發 願
+            {t('createPlan.title')}
           </Text>
 
           {/* 類型選擇 */}
@@ -164,11 +164,11 @@ export function CreatePlanScreen({ navigation }: Props) {
                   styles.typeBtnText,
                   {
                     color: planType === 'goal' ? T.bg : T.inkMuted,
-                    fontFamily: FONT_SERIF,
+                    fontFamily: T.fontSerif,
                   },
                 ]}
               >
-                目 標
+                {t('createPlan.typeGoal')}
               </Text>
             </Pressable>
             <Pressable
@@ -186,28 +186,28 @@ export function CreatePlanScreen({ navigation }: Props) {
                   styles.typeBtnText,
                   {
                     color: planType === 'casual' ? T.bg : T.inkMuted,
-                    fontFamily: FONT_SERIF,
+                    fontFamily: T.fontSerif,
                   },
                 ]}
               >
-                日 常
+                {t('createPlan.typeCasual')}
               </Text>
             </Pressable>
           </View>
 
           {/* 願名 */}
-          <Text style={[styles.label, { color: T.inkMuted }]}>願名 · TITLE</Text>
+          <Text style={[styles.label, { color: T.inkMuted }]}>{t('createPlan.nameLabel')}</Text>
           <TextInput
             value={name}
             onChangeText={setName}
-            placeholder="為誰而願"
+            placeholder={t('createPlan.namePlaceholder')}
             placeholderTextColor={T.inkFaint}
             style={inputStyle}
           />
 
           {/* 發願對象 — chip 分類 */}
           <Text style={[styles.label, { color: T.inkMuted }]}>
-            發願對象 · FOR WHOM
+            {t('createPlan.forWhomLabel')}
           </Text>
           <View style={styles.dedRow}>
             {DEDICATIONS.map((d) => {
@@ -230,11 +230,11 @@ export function CreatePlanScreen({ navigation }: Props) {
                       styles.dedLabel,
                       {
                         color: active ? T.gold : T.inkSoft,
-                        fontFamily: FONT_SERIF,
+                        fontFamily: T.fontSerif,
                       },
                     ]}
                   >
-                    {d.label}
+                    {t(`dedication.${d.key}`)}
                   </Text>
                 </Pressable>
               );
@@ -244,7 +244,7 @@ export function CreatePlanScreen({ navigation }: Props) {
             <TextInput
               value={customName}
               onChangeText={setCustomName}
-              placeholder="輸入對象（例：媽媽）"
+              placeholder={t('createPlan.customPlaceholder')}
               placeholderTextColor={T.inkFaint}
               style={inputStyle}
             />
@@ -256,26 +256,26 @@ export function CreatePlanScreen({ navigation }: Props) {
               <View style={styles.stepRow}>
                 <View style={{ flex: 1 }}>
                   <Text style={[styles.label, { color: T.inkMuted }]}>
-                    每日 · DAILY
+                    {t('createPlan.dailyLabel')}
                   </Text>
                   <DragStepper
                     value={daily}
                     onChange={setDaily}
                     max={108}
-                    suffix="遍"
-                    label="每 日 遍 數"
+                    suffix={t('common.times')}
+                    label={t('createPlan.dailyStepperLabel')}
                   />
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={[styles.label, { color: T.inkMuted }]}>
-                    持續 · DURATION
+                    {t('createPlan.durationLabel')}
                   </Text>
                   <DragStepper
                     value={duration}
                     onChange={setDuration}
                     max={365}
-                    suffix="日"
-                    label="持 續 天 數"
+                    suffix={t('common.day')}
+                    label={t('createPlan.durationStepperLabel')}
                   />
                 </View>
               </View>
@@ -283,18 +283,18 @@ export function CreatePlanScreen({ navigation }: Props) {
               {/* 總計 */}
               <View style={[styles.totalBox, { backgroundColor: T.bgSunken }]}>
                 <Text style={[styles.totalLabel, { color: T.inkMuted }]}>
-                  總 計 · TOTAL
+                  {t('createPlan.totalLabel')}
                 </Text>
                 <Text
                   style={[
                     styles.totalValue,
-                    { fontFamily: FONT_SERIF_MEDIUM },
+                    { fontFamily: T.fontSerifMedium },
                   ]}
                 >
                   <Text style={{ color: T.vermilion }}>
                     {total.toLocaleString()}
                   </Text>
-                  <Text style={{ color: T.inkMuted, fontSize: 13 }}> 遍</Text>
+                  <Text style={{ color: T.inkMuted, fontSize: 13 }}>{` ${t('common.times')}`}</Text>
                 </Text>
               </View>
             </>
@@ -302,7 +302,7 @@ export function CreatePlanScreen({ navigation }: Props) {
 
           {/* 提醒 */}
           <Text style={[styles.label, { color: T.inkMuted }]}>
-            每日提醒 · REMINDER
+            {t('createPlan.reminderLabel')}
           </Text>
           <TextInput
             value={reminder}
@@ -314,13 +314,13 @@ export function CreatePlanScreen({ navigation }: Props) {
           />
           {!reminderValid && reminder.trim().length > 0 && (
             <Text style={[styles.hint, { color: T.vermilion }]}>
-              時間格式：HH:MM（例：06:30）
+              {t('createPlan.timeError')}
             </Text>
           )}
 
           {/* 封面色 */}
           <Text style={[styles.label, { color: T.inkMuted }]}>
-            封面色 · COVER
+            {t('createPlan.colorLabel')}
           </Text>
           <View style={styles.colorRow}>
             {COLORS.map((c) => {
@@ -336,7 +336,7 @@ export function CreatePlanScreen({ navigation }: Props) {
                       borderColor: colorKey === c.key ? T.ink : 'transparent',
                     },
                   ]}
-                  accessibilityLabel={c.name}
+                  accessibilityLabel={t(`createPlan.colors.${c.key}`)}
                 />
               );
             })}
@@ -344,12 +344,12 @@ export function CreatePlanScreen({ navigation }: Props) {
 
           {/* 發願文 */}
           <Text style={[styles.label, { color: T.inkMuted }]}>
-            發願文 · VOW (OPTIONAL)
+            {t('createPlan.noteLabel')}
           </Text>
           <TextInput
             value={note}
             onChangeText={setNote}
-            placeholder="願以此功德⋯⋯"
+            placeholder={t('createPlan.notePlaceholder')}
             placeholderTextColor={T.inkFaint}
             multiline
             numberOfLines={3}
@@ -371,10 +371,10 @@ export function CreatePlanScreen({ navigation }: Props) {
             <Text
               style={[
                 styles.createBtnText,
-                { color: T.bg, fontFamily: FONT_SERIF_MEDIUM },
+                { color: T.bg, fontFamily: T.fontSerifMedium },
               ]}
             >
-              立 下 此 願
+              {t('createPlan.submit')}
             </Text>
           </Pressable>
         </ScrollView>

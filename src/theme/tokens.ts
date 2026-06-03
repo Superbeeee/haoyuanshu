@@ -57,12 +57,6 @@ export type ThemeTokens = {
   woodDeep: string;
 };
 
-// 字體名稱常數
-// 過渡期保留：尚未遷移至 T.fontSerif 的畫面仍 import 這些；遷移完成後移除。
-export const FONT_SERIF = 'NotoSerifTC_400Regular';
-export const FONT_SERIF_MEDIUM = 'NotoSerifTC_500Medium';
-export const FONT_SANS = 'System';
-
 // 漢字書法字型 — 固定使用繁中 Noto Serif，不隨 UI 語言切換。
 // 用於印章(Seal)、品牌標題「好願書」、心經等漢字書法元素；
 // 因拉丁字型（英文）無漢字 glyph，這些元素一律以此渲染。NotoSerifTC 始終載入。

@@ -10,12 +10,12 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTheme } from '../theme/useTheme';
 import { useStore } from '../store';
-import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
+import { t } from '../i18n';
 import { PaperBg } from '../components/PaperBg';
 import { Seal } from '../components/Seal';
 import { PlanStackParamList } from '../navigation/types';
 import { getCurrentDay } from '../utils/planDay';
-import { formatLocalDate } from '../utils/date';
+import { formatLocalDate, weekdayLabel } from '../utils/date';
 
 type Props = NativeStackScreenProps<PlanStackParamList, 'Home'>;
 
@@ -78,15 +78,15 @@ export function HomeScreen({ navigation }: Props) {
       <View style={styles.topBar}>
         <View>
           <Text style={[styles.dateLabel, { color: T.inkMuted }]}>
-            APRIL · 廿 · 八
+            {`${new Date().getMonth() + 1}/${new Date().getDate()} · ${weekdayLabel(new Date())}`}
           </Text>
           <Text
             style={[
               styles.greeting,
-              { color: T.ink, fontFamily: FONT_SERIF_MEDIUM },
+              { color: T.ink, fontFamily: T.fontSerifMedium },
             ]}
           >
-            晨 安 · 慧 淨
+            {t('home.greeting')}
           </Text>
         </View>
         <Pressable
@@ -110,15 +110,14 @@ export function HomeScreen({ navigation }: Props) {
         >
           <View style={styles.heatHeader}>
             <Text style={[styles.heatLabel, { color: T.inkMuted }]}>
-              近 九 十 日
+              {t('home.recentNinety')}
             </Text>
-            <Text style={[styles.heatTotal, { fontFamily: FONT_SERIF }]}>
+            <Text style={[styles.heatTotal, { fontFamily: T.fontSerif }]}>
               <Text style={{ color: T.vermilion, fontWeight: '500' }}>
                 {totalCount}
               </Text>
               <Text style={{ color: T.inkMuted, fontSize: 11 }}>
-                {' '}
-                遍 總 計
+                {t('home.totalSuffix')}
               </Text>
             </Text>
           </View>
@@ -131,14 +130,14 @@ export function HomeScreen({ navigation }: Props) {
             ))}
           </View>
           <View style={styles.heatLegend}>
-            <Text style={[styles.legendText, { color: T.inkFaint }]}>少</Text>
+            <Text style={[styles.legendText, { color: T.inkFaint }]}>{t('home.less')}</Text>
             {[0, 1, 2, 3, 4].map((v) => (
               <View
                 key={v}
                 style={[styles.legendDot, { backgroundColor: heatColor(v) }]}
               />
             ))}
-            <Text style={[styles.legendText, { color: T.inkFaint }]}>多</Text>
+            <Text style={[styles.legendText, { color: T.inkFaint }]}>{t('home.more')}</Text>
           </View>
         </View>
 
@@ -147,13 +146,13 @@ export function HomeScreen({ navigation }: Props) {
           <Text
             style={[
               styles.sectionTitle,
-              { color: T.ink, fontFamily: FONT_SERIF_MEDIUM },
+              { color: T.ink, fontFamily: T.fontSerifMedium },
             ]}
           >
-            進 行 中
+            {t('home.active')}
           </Text>
           <Text style={[styles.sectionCount, { color: T.inkMuted }]}>
-            {plans.length} 願
+            {t('home.vowCount', { count: plans.length })}
           </Text>
         </View>
 
@@ -196,7 +195,7 @@ export function HomeScreen({ navigation }: Props) {
                     <Text
                       style={[
                         styles.planName,
-                        { color: T.ink, fontFamily: FONT_SERIF_MEDIUM },
+                        { color: T.ink, fontFamily: T.fontSerifMedium },
                       ]}
                       numberOfLines={1}
                     >
@@ -204,15 +203,15 @@ export function HomeScreen({ navigation }: Props) {
                     </Text>
                     <Text style={[styles.planSub, { color: T.inkMuted }]}>
                       {isCasual
-                        ? `為 ${p.dedicatedTo} · 累計 ${totalDone} 遍`
-                        : `為 ${p.dedicatedTo} · 第 ${getCurrentDay(p.startDate, p.duration)}/${p.duration} 日`}
+                        ? t('home.subCasual', { name: p.dedicatedTo, count: totalDone })
+                        : t('home.subGoal', { name: p.dedicatedTo, day: getCurrentDay(p.startDate, p.duration), duration: p.duration })}
                     </Text>
                   </View>
                   <View style={styles.todayCount}>
                     <Text
                       style={[
                         styles.todayNum,
-                        { color: T.ink, fontFamily: FONT_SERIF_MEDIUM },
+                        { color: T.ink, fontFamily: T.fontSerifMedium },
                       ]}
                     >
                       {todayDone}
@@ -239,12 +238,12 @@ export function HomeScreen({ navigation }: Props) {
                             letterSpacing: 2,
                           }}
                         >
-                          今日圓滿
+                          {t('home.todayComplete')}
                         </Text>
                       </View>
                     ) : (
                       <Text style={[styles.todayLabel, { color: T.inkFaint }]}>
-                        今 日
+                        {t('home.today')}
                       </Text>
                     )}
                   </View>
@@ -289,10 +288,10 @@ export function HomeScreen({ navigation }: Props) {
             <Text
               style={[
                 styles.quickBtnText,
-                { color: T.ink, fontFamily: FONT_SERIF },
+                { color: T.ink, fontFamily: T.fontSerif },
               ]}
             >
-              功 德 封 存
+              {t('home.archive')}
             </Text>
           </Pressable>
           <Pressable
@@ -302,10 +301,10 @@ export function HomeScreen({ navigation }: Props) {
             <Text
               style={[
                 styles.quickBtnText,
-                { color: T.ink, fontFamily: FONT_SERIF },
+                { color: T.ink, fontFamily: T.fontSerif },
               ]}
             >
-              日 常 記 錄
+              {t('home.dailyMode')}
             </Text>
           </Pressable>
         </View>

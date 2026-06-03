@@ -83,4 +83,34 @@ export const ko: Translation = {
   woodfish: {
     tapLabel: '목어 두드리기',
   },
+  dedication: {
+    all: '전체',
+    family: '가족을 위해',
+    self: '자기 회향',
+    beings: '중생을 위해',
+    deceased: '고인을 위해',
+    other: '기타',
+  },
+  complete: {
+    title: '공덕 원만',
+    subtitle: 'MERIT COMPLETE',
+    planName: '발원 이름',
+    dedicatedTo: '수지자',
+    totalCount: '총 횟수',
+    duration: '지속 일수',
+    dedication: '회향',
+    vowText: '발원문',
+    archiveButton: '공덕 보관',
+    backContinue: '돌아가기',
+  },
+  archive: {
+    title: '공덕 보관',
+    subtitle: 'ARCHIVED MERITS',
+    empty: '아직 원만한 공덕이 없습니다',
+    forWhom: '{{name}}을(를) 위해',
+  },
+  immersive: {
+    exit: '나가기',
+    count: '카운트',
+  },
 };

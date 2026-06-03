@@ -83,4 +83,34 @@ export const en: Translation = {
   woodfish: {
     tapLabel: 'Tap woodfish',
   },
+  dedication: {
+    all: 'All',
+    family: 'Family',
+    self: 'Self',
+    beings: 'All beings',
+    deceased: 'The departed',
+    other: 'Other',
+  },
+  complete: {
+    title: 'Merit Complete',
+    subtitle: 'MERIT COMPLETE',
+    planName: 'Vow name',
+    dedicatedTo: 'For',
+    totalCount: 'Total count',
+    duration: 'Duration',
+    dedication: 'Dedication',
+    vowText: 'Vow text',
+    archiveButton: 'Archive merit',
+    backContinue: 'Back',
+  },
+  archive: {
+    title: 'Archived Merits',
+    subtitle: 'ARCHIVED MERITS',
+    empty: 'No completed merits yet',
+    forWhom: 'For {{name}}',
+  },
+  immersive: {
+    exit: 'Exit',
+    count: 'Count',
+  },
 };

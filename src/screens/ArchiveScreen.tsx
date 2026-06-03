@@ -3,7 +3,7 @@ import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTheme } from '../theme/useTheme';
 import { useStore } from '../store';
-import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
+import { t } from '../i18n';
 import { PaperBg } from '../components/PaperBg';
 import { Seal } from '../components/Seal';
 import { Plan } from '../types';
@@ -14,12 +14,12 @@ type ArchiveScreenProps =
   | NativeStackScreenProps<DailyStackParamList, 'Archive'>;
 
 const FILTERS = [
-  { key: 'all', label: '全部' },
-  { key: 'family', label: '為家人' },
-  { key: 'self', label: '自迴向' },
-  { key: 'beings', label: '為眾生' },
-  { key: 'deceased', label: '為亡者' },
-  { key: 'other', label: '其他' },
+  { key: 'all' },
+  { key: 'family' },
+  { key: 'self' },
+  { key: 'beings' },
+  { key: 'deceased' },
+  { key: 'other' },
 ];
 
 export function ArchiveScreen({ navigation }: ArchiveScreenProps) {
@@ -56,20 +56,20 @@ export function ArchiveScreen({ navigation }: ArchiveScreenProps) {
             <Seal text={p.seal} size={38} color={T.gold} />
             <View style={styles.cardInfo}>
               <Text
-                style={[styles.cardName, { color: T.ink, fontFamily: FONT_SERIF_MEDIUM }]}
+                style={[styles.cardName, { color: T.ink, fontFamily: T.fontSerifMedium }]}
                 numberOfLines={1}
               >
                 {p.name}
               </Text>
               <Text style={[styles.cardSub, { color: T.inkMuted }]}>
-                為 {p.dedicatedTo}
+                {t('archive.forWhom', { name: p.dedicatedTo })}
               </Text>
             </View>
             <View style={styles.cardRight}>
-              <Text style={[styles.cardTotal, { color: T.gold, fontFamily: FONT_SERIF_MEDIUM }]}>
+              <Text style={[styles.cardTotal, { color: T.gold, fontFamily: T.fontSerifMedium }]}>
                 {total.toLocaleString()}
               </Text>
-              <Text style={[styles.cardUnit, { color: T.inkMuted }]}>遍</Text>
+              <Text style={[styles.cardUnit, { color: T.inkMuted }]}>{t('common.times')}</Text>
             </View>
           </View>
           <View style={styles.cardFooter}>
@@ -89,15 +89,15 @@ export function ArchiveScreen({ navigation }: ArchiveScreenProps) {
       {/* 導航 */}
       <View style={styles.nav}>
         <Pressable onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Text style={{ color: T.inkSoft, fontSize: 14 }}>‹ 返回</Text>
+          <Text style={{ color: T.inkSoft, fontSize: 14 }}>{`‹ ${t('settings.back')}`}</Text>
         </Pressable>
       </View>
 
-      <Text style={[styles.title, { color: T.ink, fontFamily: FONT_SERIF_MEDIUM }]}>
-        功 德 封 存
+      <Text style={[styles.title, { color: T.ink, fontFamily: T.fontSerifMedium }]}>
+        {t('archive.title')}
       </Text>
       <Text style={[styles.subtitle, { color: T.inkMuted }]}>
-        ARCHIVED MERITS
+        {t('archive.subtitle')}
       </Text>
 
       {/* 篩選 */}
@@ -123,11 +123,11 @@ export function ArchiveScreen({ navigation }: ArchiveScreenProps) {
                 styles.filterText,
                 {
                   color: filter === f.key ? T.gold : T.inkMuted,
-                  fontFamily: FONT_SERIF,
+                  fontFamily: T.fontSerif,
                 },
               ]}
             >
-              {f.label}
+              {t(`dedication.${f.key}`)}
             </Text>
           </Pressable>
         )}
@@ -136,8 +136,8 @@ export function ArchiveScreen({ navigation }: ArchiveScreenProps) {
       {/* 列表 */}
       {filtered.length === 0 ? (
         <View style={styles.empty}>
-          <Text style={[styles.emptyText, { color: T.inkFaint, fontFamily: FONT_SERIF }]}>
-            尚 無 圓 滿 功 德
+          <Text style={[styles.emptyText, { color: T.inkFaint, fontFamily: T.fontSerif }]}>
+            {t('archive.empty')}
           </Text>
         </View>
       ) : (

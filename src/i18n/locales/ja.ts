@@ -83,4 +83,34 @@ export const ja: Translation = {
   woodfish: {
     tapLabel: '木魚を叩く',
   },
+  dedication: {
+    all: 'すべて',
+    family: '家族のため',
+    self: '自己回向',
+    beings: '衆生のため',
+    deceased: '故人のため',
+    other: 'その他',
+  },
+  complete: {
+    title: '功徳円満',
+    subtitle: 'MERIT COMPLETE',
+    planName: '願いの名',
+    dedicatedTo: '受持者',
+    totalCount: '総回数',
+    duration: '継続日数',
+    dedication: '回向',
+    vowText: '発願文',
+    archiveButton: '功徳を保存',
+    backContinue: '戻る',
+  },
+  archive: {
+    title: '功徳の保存',
+    subtitle: 'ARCHIVED MERITS',
+    empty: 'まだ円満した功徳はありません',
+    forWhom: '{{name}}のため',
+  },
+  immersive: {
+    exit: '退出',
+    count: 'カウント',
+  },
 };

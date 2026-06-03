@@ -3,7 +3,7 @@ import { View, Text, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTheme } from '../theme/useTheme';
 import { useStore } from '../store';
-import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
+import { t } from '../i18n';
 import { PaperBg } from '../components/PaperBg';
 import { Seal } from '../components/Seal';
 import { cancelReminder } from '../utils/notifications';
@@ -13,11 +13,11 @@ import { PlanStackParamList } from '../navigation/types';
 type Props = NativeStackScreenProps<PlanStackParamList, 'Complete'>;
 
 const DEDICATIONS = [
-  { key: 'family', label: '為家人', icon: '🏠' },
-  { key: 'self', label: '自迴向', icon: '🙏' },
-  { key: 'beings', label: '為眾生', icon: '🌍' },
-  { key: 'deceased', label: '為亡者', icon: '🪷' },
-  { key: 'other', label: '其他', icon: '✦' },
+  { key: 'family', icon: '🏠' },
+  { key: 'self', icon: '🙏' },
+  { key: 'beings', icon: '🌍' },
+  { key: 'deceased', icon: '🪷' },
+  { key: 'other', icon: '✦' },
 ] as const;
 
 export function CompleteScreen({ navigation, route }: Props) {
@@ -60,49 +60,49 @@ export function CompleteScreen({ navigation, route }: Props) {
         <View style={styles.header}>
           <Seal text="圓" size={56} color={T.gold} />
           <Text
-            style={[styles.title, { color: T.ink, fontFamily: FONT_SERIF_MEDIUM }]}
+            style={[styles.title, { color: T.ink, fontFamily: T.fontSerifMedium }]}
           >
-            功 德 圓 滿
+            {t('complete.title')}
           </Text>
           <Text style={[styles.subtitle, { color: T.inkMuted }]}>
-            MERIT COMPLETE
+            {t('complete.subtitle')}
           </Text>
         </View>
 
         {/* 計劃摘要 */}
         <View style={[styles.summaryCard, { backgroundColor: T.bgElevated, borderColor: T.hairline }]}>
           <View style={styles.summaryRow}>
-            <Text style={[styles.summaryLabel, { color: T.inkMuted }]}>願名</Text>
-            <Text style={[styles.summaryValue, { color: T.ink, fontFamily: FONT_SERIF }]}>
+            <Text style={[styles.summaryLabel, { color: T.inkMuted }]}>{t('complete.planName')}</Text>
+            <Text style={[styles.summaryValue, { color: T.ink, fontFamily: T.fontSerif }]}>
               {plan.name}
             </Text>
           </View>
           <View style={[styles.divider, { backgroundColor: T.hairline }]} />
           <View style={styles.summaryRow}>
-            <Text style={[styles.summaryLabel, { color: T.inkMuted }]}>受持者</Text>
-            <Text style={[styles.summaryValue, { color: T.ink, fontFamily: FONT_SERIF }]}>
+            <Text style={[styles.summaryLabel, { color: T.inkMuted }]}>{t('complete.dedicatedTo')}</Text>
+            <Text style={[styles.summaryValue, { color: T.ink, fontFamily: T.fontSerif }]}>
               {plan.dedicatedTo}
             </Text>
           </View>
           <View style={[styles.divider, { backgroundColor: T.hairline }]} />
           <View style={styles.summaryRow}>
-            <Text style={[styles.summaryLabel, { color: T.inkMuted }]}>總遍數</Text>
-            <Text style={[styles.summaryValue, { color: T.vermilion, fontFamily: FONT_SERIF_MEDIUM }]}>
-              {totalDone.toLocaleString()} 遍
+            <Text style={[styles.summaryLabel, { color: T.inkMuted }]}>{t('complete.totalCount')}</Text>
+            <Text style={[styles.summaryValue, { color: T.vermilion, fontFamily: T.fontSerifMedium }]}>
+              {`${totalDone.toLocaleString()} ${t('common.times')}`}
             </Text>
           </View>
           <View style={[styles.divider, { backgroundColor: T.hairline }]} />
           <View style={styles.summaryRow}>
-            <Text style={[styles.summaryLabel, { color: T.inkMuted }]}>持續天數</Text>
-            <Text style={[styles.summaryValue, { color: T.ink, fontFamily: FONT_SERIF }]}>
-              {plan.duration} 日
+            <Text style={[styles.summaryLabel, { color: T.inkMuted }]}>{t('complete.duration')}</Text>
+            <Text style={[styles.summaryValue, { color: T.ink, fontFamily: T.fontSerif }]}>
+              {`${plan.duration} ${t('common.day')}`}
             </Text>
           </View>
         </View>
 
         {/* 回向分類 */}
-        <Text style={[styles.sectionTitle, { color: T.ink, fontFamily: FONT_SERIF_MEDIUM }]}>
-          回 向
+        <Text style={[styles.sectionTitle, { color: T.ink, fontFamily: T.fontSerifMedium }]}>
+          {t('complete.dedication')}
         </Text>
         <View style={styles.dedicationGrid}>
           {DEDICATIONS.map((d) => (
@@ -123,11 +123,11 @@ export function CompleteScreen({ navigation, route }: Props) {
                   styles.dedicationLabel,
                   {
                     color: selectedDedication === d.key ? T.gold : T.ink,
-                    fontFamily: FONT_SERIF,
+                    fontFamily: T.fontSerif,
                   },
                 ]}
               >
-                {d.label}
+                {t(`dedication.${d.key}`)}
               </Text>
             </Pressable>
           ))}
@@ -136,8 +136,8 @@ export function CompleteScreen({ navigation, route }: Props) {
         {/* 發願文 */}
         {plan.note ? (
           <View style={[styles.noteCard, { backgroundColor: T.bgSunken }]}>
-            <Text style={[styles.noteLabel, { color: T.inkMuted }]}>發願文</Text>
-            <Text style={[styles.noteText, { color: T.ink, fontFamily: FONT_SERIF }]}>
+            <Text style={[styles.noteLabel, { color: T.inkMuted }]}>{t('complete.vowText')}</Text>
+            <Text style={[styles.noteText, { color: T.ink, fontFamily: T.fontSerif }]}>
               {plan.note}
             </Text>
           </View>
@@ -145,14 +145,14 @@ export function CompleteScreen({ navigation, route }: Props) {
 
         {/* 封存按鈕 */}
         <Pressable onPress={handleArchive} style={[styles.archiveBtn, { backgroundColor: T.gold }]}>
-          <Text style={[styles.archiveBtnText, { fontFamily: FONT_SERIF_MEDIUM }]}>
-            封 存 功 德
+          <Text style={[styles.archiveBtnText, { fontFamily: T.fontSerifMedium }]}>
+            {t('complete.archiveButton')}
           </Text>
         </Pressable>
 
         <Pressable onPress={() => navigation.goBack()} style={styles.backLink}>
-          <Text style={[styles.backLinkText, { color: T.inkMuted, fontFamily: FONT_SERIF }]}>
-            返回繼續
+          <Text style={[styles.backLinkText, { color: T.inkMuted, fontFamily: T.fontSerif }]}>
+            {t('complete.backContinue')}
           </Text>
         </Pressable>
       </ScrollView>

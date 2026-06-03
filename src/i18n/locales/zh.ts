@@ -83,6 +83,36 @@ export const zh = {
   woodfish: {
     tapLabel: '敲木魚',
   },
+  dedication: {
+    all: '全部',
+    family: '為家人',
+    self: '自迴向',
+    beings: '為眾生',
+    deceased: '為亡者',
+    other: '其他',
+  },
+  complete: {
+    title: '功德圓滿',
+    subtitle: 'MERIT COMPLETE',
+    planName: '願名',
+    dedicatedTo: '受持者',
+    totalCount: '總遍數',
+    duration: '持續天數',
+    dedication: '回向',
+    vowText: '發願文',
+    archiveButton: '封存功德',
+    backContinue: '返回繼續',
+  },
+  archive: {
+    title: '功德封存',
+    subtitle: 'ARCHIVED MERITS',
+    empty: '尚無圓滿功德',
+    forWhom: '為 {{name}}',
+  },
+  immersive: {
+    exit: '退出',
+    count: '計次',
+  },
 };
 
 export type Translation = typeof zh;

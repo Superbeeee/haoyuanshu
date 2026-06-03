@@ -2,7 +2,9 @@ import React, { useState, useCallback } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useStore } from '../store';
-import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
+import { FONT_HANZI } from '../theme/tokens';
+import { useTheme } from '../theme/useTheme';
+import { t } from '../i18n';
 import { Woodfish } from '../components/Woodfish';
 import { PlanStackParamList } from '../navigation/types';
 import { formatLocalDate } from '../utils/date';
@@ -12,6 +14,7 @@ type Props = NativeStackScreenProps<PlanStackParamList, 'Immersive'>;
 const today = () => formatLocalDate();
 
 export function ImmersiveScreen({ navigation, route }: Props) {
+  const { T } = useTheme();
   const { planId, currentCount, goal } = route.params;
   const addDailyLog = useStore((s) => s.addDailyLog);
   const muted = useStore((s) => s.muted);
@@ -38,7 +41,7 @@ export function ImmersiveScreen({ navigation, route }: Props) {
       {/* 頂部 */}
       <View style={styles.topBar}>
         <Pressable onPress={() => navigation.goBack()} style={styles.exitBtn}>
-          <Text style={styles.exitText}>✕ 退 出</Text>
+          <Text style={styles.exitText}>{`✕ ${t('immersive.exit')}`}</Text>
         </Pressable>
         <Pressable onPress={() => setMuted(!muted)}>
           <Text style={styles.muteIcon}>{muted ? '🔇' : '🔈'}</Text>
@@ -49,11 +52,11 @@ export function ImmersiveScreen({ navigation, route }: Props) {
       <View style={styles.center}>
         <View style={styles.countSection}>
           <Text style={styles.todayLabel}>TODAY</Text>
-          <Text style={styles.countNum}>
+          <Text style={[styles.countNum, { fontFamily: T.fontSerif }]}>
             {count}
             {goal > 0 && <Text style={styles.countGoal}>/{goal}</Text>}
           </Text>
-          <Text style={styles.bian}>遍</Text>
+          <Text style={[styles.bian, { fontFamily: T.fontSerif }]}>{t('common.times')}</Text>
         </View>
 
         <Woodfish size={260} muted={muted} />
@@ -66,7 +69,7 @@ export function ImmersiveScreen({ navigation, route }: Props) {
           >
             <Text style={styles.pillMinus}>−</Text>
           </Pressable>
-          <Text style={styles.pillLabel}>計 次</Text>
+          <Text style={[styles.pillLabel, { fontFamily: T.fontSerif }]}>{t('immersive.count')}</Text>
           <Pressable
             onPress={() => updateCount(1)}
             style={styles.pillBtnPlus}
@@ -117,7 +120,6 @@ const styles = StyleSheet.create({
     letterSpacing: 8,
   },
   countNum: {
-    fontFamily: FONT_SERIF,
     fontSize: 96,
     fontWeight: '300',
     color: INK,
@@ -126,7 +128,6 @@ const styles = StyleSheet.create({
   },
   countGoal: { fontSize: 28, color: 'rgba(237,228,208,0.4)' },
   bian: {
-    fontFamily: FONT_SERIF,
     fontSize: 12,
     color: FAINT,
     letterSpacing: 6,
@@ -151,7 +152,6 @@ const styles = StyleSheet.create({
   pillMinus: { color: INK, fontSize: 22 },
   pillLabel: {
     paddingHorizontal: 20,
-    fontFamily: FONT_SERIF,
     fontSize: 14,
     color: 'rgba(237,228,208,0.6)',
     letterSpacing: 4,
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   pillPlusText: { color: '#1a1612', fontSize: 22 },
   zenText: {
     textAlign: 'center',
-    fontFamily: FONT_SERIF,
+    fontFamily: FONT_HANZI,
     fontSize: 12,
     color: VERY_FAINT,
     letterSpacing: 8,

@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Plan, DailyLog, Settings } from '../types';
 import { formatLocalDate } from '../utils/date';
+import { applyLanguage, type Language } from '../i18n';
 
 const KEYS = {
   plans: '@haoyuanshu/plans',
@@ -30,6 +31,7 @@ type AppState = {
   updatePlan: (id: string, updates: Partial<Plan>) => void;
   addDailyLog: (log: DailyLog) => void;
   updateSettings: (updates: Partial<Settings>) => void;
+  setLanguage: (lang: Language | null) => void;
   setMuted: (m: boolean) => void;
   clearAll: () => void;
   getTodayCount: (planId: string) => number;
@@ -41,7 +43,7 @@ const today = () => formatLocalDate();
 export const useStore = create<AppState>((set, get) => ({
   plans: [],
   dailyLogs: [],
-  settings: { appMode: null, theme: 'light' },
+  settings: { appMode: null, theme: 'light', language: null },
   hydrated: false,
   muted: false,
 
@@ -52,12 +54,16 @@ export const useStore = create<AppState>((set, get) => ({
         AsyncStorage.getItem(KEYS.dailyLogs),
         AsyncStorage.getItem(KEYS.settings),
       ]);
+      const loaded: Settings = settingsStr
+        ? JSON.parse(settingsStr)
+        : { appMode: null, theme: 'light', language: null };
+      // 向後相容：舊資料無 language 欄位時視為跟隨系統
+      const settings: Settings = { ...loaded, language: loaded.language ?? null };
+      applyLanguage(settings.language);
       set({
         plans: plansStr ? JSON.parse(plansStr) : [],
         dailyLogs: logsStr ? JSON.parse(logsStr) : [],
-        settings: settingsStr
-          ? JSON.parse(settingsStr)
-          : { appMode: null, theme: 'light' },
+        settings,
         hydrated: true,
       });
     } catch (e) {
@@ -103,13 +109,21 @@ export const useStore = create<AppState>((set, get) => ({
     persist(KEYS.settings, settings);
   },
 
+  setLanguage: (lang) => {
+    // 套用到 i18n（null 時跟隨系統），更新 store 並持久化
+    applyLanguage(lang);
+    const settings = { ...get().settings, language: lang };
+    set({ settings });
+    persist(KEYS.settings, settings);
+  },
+
   setMuted: (m) => set({ muted: m }),
 
   clearAll: () => {
     set({
       plans: [],
       dailyLogs: [],
-      settings: { appMode: null, theme: 'light' },
+      settings: { appMode: null, theme: 'light', language: null },
     });
     AsyncStorage.multiRemove([KEYS.plans, KEYS.dailyLogs, KEYS.settings]).catch(
       (e) => {

@@ -24,7 +24,10 @@ export type DailyLog = {
   count: number;
 };
 
+import type { Language } from '../i18n';
+
 export type Settings = {
   appMode: 'plan' | 'daily' | null;
   theme: 'light' | 'dark';
+  language: Language | null; // null = 跟隨系統
 };

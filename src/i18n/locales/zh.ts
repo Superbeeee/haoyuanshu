@@ -41,6 +41,30 @@ export const zh = {
     reminderFailTitle: '無法啟用提醒',
     reminderFailMessage: '請確認系統通知權限是否開啟。',
   },
+  daily: {
+    subtitle: 'DAILY PRACTICE',
+    title: '日常記錄',
+    todayCount: '今日遍數',
+    total: '累計',
+    recentSeven: '近七日',
+    moreDates: '更多日期',
+    addOne: '+1 遍',
+    sutra: '心經經文',
+    archive: '功德封存',
+    switchToPlan: '切換至發願計劃',
+  },
+  today: {
+    dayProgress: 'DAY {{current}} OF {{total}}',
+    dailyPractice: 'DAILY PRACTICE',
+    dedicatedTo: '為 {{name}} 而念',
+    hint: '輕觸木魚 · 不計入遍數',
+    chantedOnce: '唸了一遍',
+    sutra: '心經經文',
+    immersive: '沉浸模式',
+    complete: '功德圓滿 · 封存',
+    editOtherDates: '編輯其他日期',
+    back: '計劃',
+  },
 };
 
 export type Translation = typeof zh;

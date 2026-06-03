@@ -4,14 +4,14 @@ import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTheme } from '../theme/useTheme';
 import { useStore } from '../store';
-import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
+import { t } from '../i18n';
 import { PaperBg } from '../components/PaperBg';
 import { Woodfish } from '../components/Woodfish';
 import { SutraSheet } from '../components/SutraSheet';
 import { CountEditor } from '../components/CountEditor';
 import { DatePickerSheet } from '../components/DatePickerSheet';
 import { DailyStackParamList } from '../navigation/types';
-import { formatLocalDate } from '../utils/date';
+import { formatLocalDate, weekdayLabel } from '../utils/date';
 
 type Props = NativeStackScreenProps<DailyStackParamList, 'DailyMain'>;
 
@@ -65,7 +65,7 @@ export function DailyScreen({ navigation }: Props) {
       return {
         date: dateStr,
         count: log?.count ?? 0,
-        day: ['日', '一', '二', '三', '四', '五', '六'][d.getDay()],
+        day: weekdayLabel(d),
         month: d.getMonth() + 1,
         dayNum: d.getDate(),
         isToday: dateStr === todayStr(),
@@ -124,15 +124,15 @@ export function DailyScreen({ navigation }: Props) {
       <View style={styles.topBar}>
         <View>
           <Text style={[styles.subtitle, { color: T.inkMuted }]}>
-            DAILY PRACTICE
+            {t('daily.subtitle')}
           </Text>
           <Text
             style={[
               styles.title,
-              { color: T.ink, fontFamily: FONT_SERIF_MEDIUM },
+              { color: T.ink, fontFamily: T.fontSerifMedium, letterSpacing: T.tracking.wider },
             ]}
           >
-            日 常 記 錄
+            {t('daily.title')}
           </Text>
         </View>
         <View style={styles.topRight}>
@@ -158,27 +158,27 @@ export function DailyScreen({ navigation }: Props) {
         <Text
           style={[
             styles.countNum,
-            { color: T.ink, fontFamily: FONT_SERIF },
+            { color: T.ink, fontFamily: T.fontSerif },
           ]}
         >
           {count}
         </Text>
         <Text style={[styles.todayLabel, { color: T.inkMuted }]}>
-          今日遍數
+          {t('daily.todayCount')}
         </Text>
         <View style={[styles.totalBox, { backgroundColor: T.bgSunken }]}>
           <Text style={[styles.totalLabel, { color: T.inkMuted }]}>
-            累計
+            {t('daily.total')}
           </Text>
           <Text
             style={[
               styles.totalNum,
-              { color: T.vermilion, fontFamily: FONT_SERIF_MEDIUM },
+              { color: T.vermilion, fontFamily: T.fontSerifMedium },
             ]}
           >
             {totalCount.toLocaleString()}
           </Text>
-          <Text style={[styles.totalUnit, { color: T.inkMuted }]}>遍</Text>
+          <Text style={[styles.totalUnit, { color: T.inkMuted }]}>{t('common.times')}</Text>
         </View>
       </View>
 
@@ -186,11 +186,11 @@ export function DailyScreen({ navigation }: Props) {
       <View style={[styles.chartCard, { backgroundColor: T.bgElevated, borderColor: T.hairline }]}>
         <View style={styles.chartHeader}>
           <Text style={[styles.chartTitle, { color: T.inkMuted }]}>
-            近 七 日
+            {t('daily.recentSeven')}
           </Text>
           <Pressable onPress={() => setPickerOpen(true)}>
-            <Text style={[styles.moreText, { color: T.inkMuted, fontFamily: FONT_SERIF }]}>
-              更 多 日 期 ›
+            <Text style={[styles.moreText, { color: T.inkMuted, fontFamily: T.fontSerif }]}>
+              {`${t('daily.moreDates')} ›`}
             </Text>
           </Pressable>
         </View>
@@ -218,7 +218,7 @@ export function DailyScreen({ navigation }: Props) {
               <Text
                 style={[
                   styles.chartDate,
-                  { color: d.isToday ? T.ink : T.inkMuted, fontFamily: FONT_SERIF },
+                  { color: d.isToday ? T.ink : T.inkMuted, fontFamily: T.fontSerif },
                 ]}
               >
                 {d.month}/{d.dayNum}
@@ -252,10 +252,10 @@ export function DailyScreen({ navigation }: Props) {
             <Text
               style={[
                 styles.mainBtnText,
-                { color: T.bg, fontFamily: FONT_SERIF_MEDIUM },
+                { color: T.bg, fontFamily: T.fontSerifMedium },
               ]}
             >
-              +1 遍
+              {t('daily.addOne')}
             </Text>
           </Pressable>
         </View>
@@ -265,16 +265,16 @@ export function DailyScreen({ navigation }: Props) {
             onPress={() => setSutraOpen(true)}
             style={[styles.actionBtn, { borderColor: T.hairlineStrong }]}
           >
-            <Text style={[styles.actionBtnText, { color: T.ink, fontFamily: FONT_SERIF }]}>
-              心 經 經 文
+            <Text style={[styles.actionBtnText, { color: T.ink, fontFamily: T.fontSerif }]}>
+              {t('daily.sutra')}
             </Text>
           </Pressable>
           <Pressable
             onPress={() => navigation.navigate('Archive')}
             style={[styles.actionBtn, { borderColor: T.hairlineStrong }]}
           >
-            <Text style={[styles.actionBtnText, { color: T.ink, fontFamily: FONT_SERIF }]}>
-              功 德 封 存
+            <Text style={[styles.actionBtnText, { color: T.ink, fontFamily: T.fontSerif }]}>
+              {t('daily.archive')}
             </Text>
           </Pressable>
         </View>
@@ -284,8 +284,8 @@ export function DailyScreen({ navigation }: Props) {
           onPress={() => useStore.getState().updateSettings({ appMode: 'plan' })}
           style={[styles.switchBtn, { borderColor: T.hairlineStrong }]}
         >
-          <Text style={[styles.switchBtnText, { color: T.inkMuted, fontFamily: FONT_SERIF }]}>
-            切 換 至 發 願 計 劃
+          <Text style={[styles.switchBtnText, { color: T.inkMuted, fontFamily: T.fontSerif }]}>
+            {t('daily.switchToPlan')}
           </Text>
         </Pressable>
       </View>
@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
     paddingTop: 60,
   },
   subtitle: { fontSize: 11, letterSpacing: 6 },
-  title: { fontSize: 22, letterSpacing: 4, marginTop: 2 },
+  title: { fontSize: 22, marginTop: 2 },
   topRight: { flexDirection: 'row', gap: 10, alignItems: 'center' },
   muteBtn: {
     width: 38,

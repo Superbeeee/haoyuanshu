@@ -4,7 +4,7 @@ import { createAudioPlayer, type AudioPlayer } from 'expo-audio';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useTheme } from '../theme/useTheme';
 import { useStore } from '../store';
-import { FONT_SERIF, FONT_SERIF_MEDIUM } from '../theme/tokens';
+import { t } from '../i18n';
 import { PaperBg } from '../components/PaperBg';
 import { Woodfish } from '../components/Woodfish';
 import { SutraSheet } from '../components/SutraSheet';
@@ -12,7 +12,7 @@ import { CountEditor } from '../components/CountEditor';
 import { DatePickerSheet } from '../components/DatePickerSheet';
 import { PlanStackParamList } from '../navigation/types';
 import { getCurrentDay } from '../utils/planDay';
-import { formatLocalDate } from '../utils/date';
+import { formatLocalDate, weekdayLabel } from '../utils/date';
 
 type Props = NativeStackScreenProps<PlanStackParamList, 'Today'>;
 
@@ -63,7 +63,6 @@ export function TodayScreen({ navigation, route }: Props) {
   // 近 7 日打卡紀錄
   const last7 = useMemo(() => {
     const now = new Date();
-    const dayNames = ['日', '一', '二', '三', '四', '五', '六'];
     return Array.from({ length: 7 }, (_, i) => {
       const d = new Date(now);
       d.setDate(d.getDate() - (6 - i));
@@ -72,7 +71,7 @@ export function TodayScreen({ navigation, route }: Props) {
       return {
         date: dateStr,
         count: log?.count ?? 0,
-        day: dayNames[d.getDay()],
+        day: weekdayLabel(d),
         month: d.getMonth() + 1,
         dayNum: d.getDate(),
         isToday: dateStr === todayDate,
@@ -152,7 +151,7 @@ export function TodayScreen({ navigation, route }: Props) {
       {/* 頂部導航 */}
       <View style={styles.nav}>
         <Pressable onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Text style={{ color: T.inkSoft, fontSize: 14 }}>‹ 計 劃</Text>
+          <Text style={{ color: T.inkSoft, fontSize: 14 }}>{`‹ ${t('today.back')}`}</Text>
         </Pressable>
         <Pressable
           onPress={() => setMuted(!muted)}
@@ -168,24 +167,24 @@ export function TodayScreen({ navigation, route }: Props) {
       <View style={styles.planInfo}>
         {!isCasual && (
           <Text style={[styles.dayLabel, { color: T.inkMuted }]}>
-            DAY {getCurrentDay(plan.startDate, plan.duration)} OF {plan.duration}
+            {t('today.dayProgress', { current: getCurrentDay(plan.startDate, plan.duration), total: plan.duration })}
           </Text>
         )}
         {isCasual && (
           <Text style={[styles.dayLabel, { color: T.inkMuted }]}>
-            DAILY PRACTICE
+            {t('today.dailyPractice')}
           </Text>
         )}
         <Text
           style={[
             styles.planName,
-            { color: T.ink, fontFamily: FONT_SERIF_MEDIUM },
+            { color: T.ink, fontFamily: T.fontSerifMedium },
           ]}
         >
           {plan.name}
         </Text>
         <Text style={[styles.forWhom, { color: T.inkMuted }]}>
-          為 {plan.dedicatedTo} 而念
+          {t('today.dedicatedTo', { name: plan.dedicatedTo })}
         </Text>
       </View>
 
@@ -195,7 +194,7 @@ export function TodayScreen({ navigation, route }: Props) {
           <Text
             style={[
               styles.countNum,
-              { color: T.ink, fontFamily: FONT_SERIF },
+              { color: T.ink, fontFamily: T.fontSerif },
             ]}
           >
             {count}
@@ -204,20 +203,20 @@ export function TodayScreen({ navigation, route }: Props) {
             <Text
               style={[
                 styles.countGoal,
-                { color: T.inkMuted, fontFamily: FONT_SERIF },
+                { color: T.inkMuted, fontFamily: T.fontSerif },
               ]}
             >
-              / {goal} 遍
+              {`/ ${goal} ${t('common.times')}`}
             </Text>
           )}
           {isCasual && (
             <Text
               style={[
                 styles.countGoal,
-                { color: T.inkMuted, fontFamily: FONT_SERIF },
+                { color: T.inkMuted, fontFamily: T.fontSerif },
               ]}
             >
-              遍
+              {t('common.times')}
             </Text>
           )}
         </View>
@@ -274,7 +273,7 @@ export function TodayScreen({ navigation, route }: Props) {
                     styles.weekDate,
                     {
                       color: d.isToday ? T.ink : T.inkMuted,
-                      fontFamily: FONT_SERIF,
+                      fontFamily: T.fontSerif,
                     },
                   ]}
                 >
@@ -290,8 +289,8 @@ export function TodayScreen({ navigation, route }: Props) {
           onPress={() => setPickerOpen(true)}
           style={[styles.moreBtn, { borderColor: T.hairlineStrong }]}
         >
-          <Text style={[styles.moreBtnText, { color: T.inkMuted, fontFamily: FONT_SERIF }]}>
-            編 輯 其 他 日 期 ›
+          <Text style={[styles.moreBtnText, { color: T.inkMuted, fontFamily: T.fontSerif }]}>
+            {`${t('today.editOtherDates')} ›`}
           </Text>
         </Pressable>
       </View>
@@ -304,7 +303,7 @@ export function TodayScreen({ navigation, route }: Props) {
       {/* 控制區 */}
       <View style={styles.controls}>
         <Text style={[styles.hint, { color: T.inkFaint }]}>
-          輕 觸 木 魚 · 不 計 入 遍 數
+          {t('today.hint')}
         </Text>
 
         {/* 計次按鈕 */}
@@ -325,10 +324,10 @@ export function TodayScreen({ navigation, route }: Props) {
             <Text
               style={[
                 styles.mainBtnText,
-                { color: T.bg, fontFamily: FONT_SERIF_MEDIUM },
+                { color: T.bg, fontFamily: T.fontSerifMedium },
               ]}
             >
-              唸 了 一 遍
+              {t('today.chantedOnce')}
             </Text>
           </Pressable>
         </View>
@@ -342,10 +341,10 @@ export function TodayScreen({ navigation, route }: Props) {
             <Text
               style={[
                 styles.actionBtnText,
-                { color: T.ink, fontFamily: FONT_SERIF },
+                { color: T.ink, fontFamily: T.fontSerif },
               ]}
             >
-              心 經 經 文
+              {t('today.sutra')}
             </Text>
           </Pressable>
           <Pressable
@@ -361,10 +360,10 @@ export function TodayScreen({ navigation, route }: Props) {
             <Text
               style={[
                 styles.actionBtnText,
-                { color: T.ink, fontFamily: FONT_SERIF },
+                { color: T.ink, fontFamily: T.fontSerif },
               ]}
             >
-              沉 浸 模 式
+              {t('today.immersive')}
             </Text>
           </Pressable>
         </View>
@@ -378,10 +377,10 @@ export function TodayScreen({ navigation, route }: Props) {
             <Text
               style={[
                 styles.completeBtnText,
-                { fontFamily: FONT_SERIF_MEDIUM },
+                { fontFamily: T.fontSerifMedium },
               ]}
             >
-              功 德 圓 滿 · 封 存
+              {t('today.complete')}
             </Text>
           </Pressable>
         )}
